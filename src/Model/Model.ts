@@ -5,8 +5,9 @@ import {GetModelMetadataAction} from '../Actions/GetMetadataAction/GetModelMetad
 import {DataFormatter} from './DataFormatter';
 import {MetaDataInterface} from './MetaDataInterface';
 import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observer';
-import {GlobalVariables, setCookie} from '../GlobalVariables';
+import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
+import {egalStore} from "./DefaultStore";
 
 const observer = new EventObserver();
 
@@ -48,7 +49,7 @@ export class Model implements ModelInterface {
      */
     setObserver() {
         observer.subscribe(this.modelName, (data: any, actionName?: string) => {
-            if (data !== 'Start Processing') {
+            if (data !== 'Start Processing' && data !== 'Session expired!') {
                 switch (actionName) {
                     case 'getItems':
                         this.modelItems.push(data);
@@ -75,6 +76,9 @@ export class Model implements ModelInterface {
                     case 'loginToService':
                         setCookie('mandate', data[0])
                 }
+            }
+            if(data === 'Session expired!') {
+                deleteAllCookies()
             }
         });
     }
@@ -369,6 +373,7 @@ export class Model implements ModelInterface {
     }
 
     socketDisconnect(){
+        observer.broadcastSocketDisconnect('disconnect')
     }
 
 }

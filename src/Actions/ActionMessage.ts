@@ -66,16 +66,12 @@ export class ActionMessage implements ActionMessageInterface {
                 return response;
             })
             .catch((error) => {
-                observer.broadcast(error, 'error');
+                observer.broadcast(error, 'error', this.modelName);
                 return error;
             });
     }
 
     socketConnect() {
         this.socketRequest.initSocketConnect();
-    }
-
-    socketDisconnect() {
-        this.socketRequest.socketDisconnect()
     }
 }
