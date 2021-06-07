@@ -1,6 +1,8 @@
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
+import  {Method} from 'axios';
 
 export interface ModelInterface {
+
   actionGetMetadata(microserviceName: string, actionName: string, connectionType: string): void;
 
   actionGetItem(
@@ -29,6 +31,14 @@ export interface ModelInterface {
     connectionType: string,
     actionParams?: any,
     channelParameters?: RoutingKeyParams | undefined
+  ): void;
+
+  actionCustom(
+      microserviceName: string,
+      actionName: string,
+      connectionType: string,
+      requestType?: Method,
+      actionParams?: any
   ): void;
 
   actionUpdate(

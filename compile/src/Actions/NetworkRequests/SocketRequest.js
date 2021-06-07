@@ -11,7 +11,6 @@ const GlobalVariables_1 = require("../../GlobalVariables");
 const stomp_js_1 = require("stompjs/lib/stomp.js");
 const observer = new Observer_1.EventObserver();
 let client;
-let routingKey;
 class SocketRequest {
     constructor(userName, password, microserviceName, modelName, actionName, actionParameters, channelParameters) {
         this.type = 'action';
@@ -75,9 +74,6 @@ class SocketRequest {
                             observer.broadcast(receivedItems, actionName, modelName);
                         }
                         else if (result.type === 'action_error') {
-                            if (result.message === 'Token expired!') {
-                                this.refreshToken();
-                            }
                             const actionError = new ActionError_1.ActionError(result.message, result.code).getMessage();
                             observer.broadcast(actionError, 'error', modelName);
                         }
@@ -93,12 +89,12 @@ class SocketRequest {
                         if (message.body) {
                             let result = JSON.parse(message.body);
                             observer.broadcast(result.parameters.attributes, result.action_name, result.model_name);
-                            message.ack();
                         }
                         else {
                             const actionError = new ActionError_1.ActionError('got empty message').getMessage();
                             observer.broadcast(actionError, 'error', this.modelName);
                         }
+                        message.ack();
                     }, { ack: 'client' });
                 }
             };
@@ -118,10 +114,6 @@ class SocketRequest {
         client.disconnect(() => {
             observer.broadcast(`${this.modelName} disconnected`, 'disconnect', this.modelName);
         });
-    }
-    refreshToken() {
-        let currentToken = GlobalVariables_1.decipherJWT(GlobalVariables_1.getCookie('mandate'));
-        let tokenExpirationTime = currentToken.alive_until;
     }
 }
 exports.SocketRequest = SocketRequest;

@@ -1,12 +1,14 @@
 import {ModelInterface} from './ModelInterface';
 import {GetItemsAction} from '../Actions/GetItemsAction/GetItemsAction';
 import {CRUDAction} from '../Actions/CRUDActions/CRUDAction';
+import {CustomAction} from "../Actions/CustomAction/CustomAction";
 import {GetModelMetadataAction} from '../Actions/GetMetadataAction/GetModelMetadataAction';
 import {DataFormatter} from './DataFormatter';
 import {MetaDataInterface} from './MetaDataInterface';
 import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observer';
 import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
+import  {Method} from 'axios';
 import {egalStore} from "./DefaultStore";
 
 const observer = new EventObserver();
@@ -239,6 +241,24 @@ export class Model implements ModelInterface {
         Model.setConnectionType(connectionType, initializeActionCreate);
     }
 
+    async actionCustom(
+        microserviceName: string,
+        actionName: string,
+        connectionType: string,
+        requestType?: Method,
+        actionParams?: object
+    ) {
+        const initializeActionCustom = new CustomAction(
+            this.username,
+            this.password,
+            microserviceName,
+            this.modelName,
+            actionName,
+            requestType,
+            actionParams
+        );
+        Model.setConnectionType(connectionType, initializeActionCustom);
+    }
     /**
      * Экшен удаления записи
      * @param microserviceName

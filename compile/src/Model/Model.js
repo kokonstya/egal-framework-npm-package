@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Model = void 0;
 const GetItemsAction_1 = require("../Actions/GetItemsAction/GetItemsAction");
 const CRUDAction_1 = require("../Actions/CRUDActions/CRUDAction");
+const CustomAction_1 = require("../Actions/CustomAction/CustomAction");
 const GetModelMetadataAction_1 = require("../Actions/GetMetadataAction/GetModelMetadataAction");
 const DataFormatter_1 = require("./DataFormatter");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
@@ -152,6 +153,10 @@ class Model {
     async actionCreate(microserviceName, actionName, connectionType, actionParams, channelParameters) {
         const initializeActionCreate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, actionName, actionParams, channelParameters);
         Model.setConnectionType(connectionType, initializeActionCreate);
+    }
+    async actionCustom(microserviceName, actionName, connectionType, requestType, actionParams) {
+        const initializeActionCustom = new CustomAction_1.CustomAction(this.username, this.password, microserviceName, this.modelName, actionName, requestType, actionParams);
+        Model.setConnectionType(connectionType, initializeActionCustom);
     }
     /**
      * Экшен удаления записи

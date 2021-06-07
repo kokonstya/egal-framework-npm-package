@@ -11,7 +11,6 @@ import {Stomp} from 'stompjs/lib/stomp.js'
 
 const observer = new EventObserver();
 let client:any;
-let routingKey:any;
 export class SocketRequest {
     type: string;
     serviceName: string;
@@ -117,9 +116,6 @@ export class SocketRequest {
                             receivedItems = actionResult.getData();
                             observer.broadcast(receivedItems, actionName, modelName);
                         } else if (result.type === 'action_error') {
-                            if(result.message === 'Token expired!') {
-                                this.refreshToken()
-                            }
                             const actionError = new ActionError(result.message, result.code).getMessage();
                             observer.broadcast(actionError, 'error', modelName);
                         }
@@ -134,11 +130,11 @@ export class SocketRequest {
                         if (message.body) {
                             let result = JSON.parse(message.body)
                             observer.broadcast(result.parameters.attributes, result.action_name, result.model_name);
-                            message.ack();
                         } else {
                             const actionError = new ActionError('got empty message').getMessage();
                             observer.broadcast(actionError, 'error', this.modelName);
                         }
+                        message.ack();
                     }, {ack: 'client'});
                 }
             };
@@ -158,10 +154,5 @@ export class SocketRequest {
         client.disconnect(() => {
             observer.broadcast(`${this.modelName} disconnected`, 'disconnect', this.modelName);
         });
-    }
-
-    refreshToken(){
-        let currentToken = decipherJWT(getCookie('mandate'))
-        let tokenExpirationTime = currentToken.alive_until
     }
 }
