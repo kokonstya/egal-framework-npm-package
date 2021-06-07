@@ -12,13 +12,10 @@ let refreshSubscribers: any[] = [];
 export class HttpRequest {
     actionResult: ActionResult;
     actionError: ActionError;
-    httpMethod: Method;
 
     constructor() {
-        this.httpMethod = 'POST';
         this.actionResult = {} as ActionResult;
         this.actionError = {} as ActionError;
-
     }
 
     subscribeTokenRefresh(cb: any) {
@@ -59,7 +56,7 @@ export class HttpRequest {
         serviceName: string,
         modelName: string,
         actionName: string,
-        httpMethod: string,
+        httpMethod: Method,
         actionParameters: ActionParameters | undefined
     ) {
         let domain = GlobalVariables.httpBaseUrl ? GlobalVariables.httpBaseUrl : GlobalVariables.authBaseUrl
@@ -114,7 +111,7 @@ export class HttpRequest {
             if (GlobalVariables.httpBaseUrl || GlobalVariables.authBaseUrl) {
                 instance({
                     url: `${domain}/${serviceName}/${modelName}/${actionName}`,
-                    method: this.httpMethod,
+                    method: httpMethod,
                     data: data
                 })
                     .then((response) => {
