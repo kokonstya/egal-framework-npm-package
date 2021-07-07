@@ -8,6 +8,7 @@ import {MetaDataInterface} from './MetaDataInterface';
 import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observer';
 import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
+import {StoreCreator} from "../Store/StoreCreator";
 
 
 const observer = new EventObserver();
@@ -42,9 +43,13 @@ export class Model implements ModelInterface {
         this.allModelsMetadata = {};
         this.tokenUst = false;
         this.tokenUmt = false;
+        this.createStore()
         // this.setObserver();
     }
 
+    createStore(){
+        return new StoreCreator().createStore()
+    }
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
      */

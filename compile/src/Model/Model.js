@@ -8,6 +8,7 @@ const GetModelMetadataAction_1 = require("../Actions/GetMetadataAction/GetModelM
 const DataFormatter_1 = require("./DataFormatter");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 const GlobalVariables_1 = require("../GlobalVariables");
+const StoreCreator_1 = require("../Store/StoreCreator");
 const observer = new Observer_1.EventObserver();
 class Model {
     constructor(modelName, username, password) {
@@ -24,7 +25,11 @@ class Model {
         this.allModelsMetadata = {};
         this.tokenUst = false;
         this.tokenUmt = false;
+        this.createStore();
         // this.setObserver();
+    }
+    createStore() {
+        return new StoreCreator_1.StoreCreator().createStore();
     }
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
