@@ -1,10 +1,11 @@
 import {StoreType} from "./StoreType";
+import {PiniaStore} from "./PiniaStore";
 
 export class VueStore extends StoreType {
     private static instance: VueStore | null;
+    private modelStore:any
     constructor() {
         super();
-        this.initStore()
     }
 
     static getInstance() {
@@ -13,7 +14,15 @@ export class VueStore extends StoreType {
         }
         return this.instance;
     }
-    public initStore() {
-        console.log('init store in vue store')
+
+    public initStore(modelName:string) {
+        let modelStoreInit = new PiniaStore(modelName)
+        this.modelStore = modelStoreInit.egalStore
+        console.log('init store in vue store', modelName)
     }
+
+    refreshStore(){
+        this.modelStore.$state = {}
+    }
+
 }

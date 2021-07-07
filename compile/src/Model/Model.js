@@ -29,7 +29,8 @@ class Model {
         // this.setObserver();
     }
     createStore() {
-        return new StoreCreator_1.StoreCreator().createStore();
+        this.test = new StoreCreator_1.StoreCreator().createStore();
+        this.test.initStore(this.modelName);
     }
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
