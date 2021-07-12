@@ -1,4 +1,9 @@
-import {defineStore} from 'pinia'
+import Vue from 'vue'
+import VueCompositionApi from '@vue/composition-api'
+import {defineStore, createPinia, PiniaPlugin} from 'pinia'
+Vue.use(VueCompositionApi)
+Vue.use(PiniaPlugin)
+const pinia = createPinia()
 
 export class PiniaStore {
     storeId: string
@@ -11,9 +16,12 @@ export class PiniaStore {
         id: this.storeId,
         state() {
             return {
-                modelItems: [],
+                modelItems: ['hui'],
                 modelMetadata: {}
             }
         },
+        actions: {
+            getItems() {}
+        }
     })
 }

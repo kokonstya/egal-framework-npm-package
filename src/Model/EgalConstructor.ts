@@ -3,13 +3,13 @@ import {EventObserver} from "../Actions/NetworkRequests/SocketConnection/Observe
 
 
 export class EgalConstructor {
-    private egalModel: Model
-    private egalObserver: EventObserver
-    private modelName: string
-    private userName: string
-    private password: string
-    private url: string
-    private connectionType: string
+    private readonly egalModel: Model
+    private egalObserver: EventObserver = EventObserver.getInstance()
+    private readonly modelName: string
+    private readonly userName: string
+    private readonly password: string
+    private readonly url: string
+    private readonly connectionType: string
 
     constructor(modelParams: {modelName: string, userName: string, password: string, url: string, connectionType: string}){
         this.modelName = modelParams.modelName
@@ -18,7 +18,7 @@ export class EgalConstructor {
         this.url = modelParams.url
         this.connectionType = modelParams.connectionType
         this.egalModel = new Model(this.modelName, this.userName, this.password)
-        this.egalObserver = new EventObserver()
+        // this.egalObserver = EventObserver.getInstance()
         this.initModel()
     }
 
@@ -30,7 +30,6 @@ export class EgalConstructor {
     initModelObserver() {
         return new Promise((resolve, reject) => {
             this.egalObserver.subscribe(this.modelName, (data:any, actionName:string, modelName:string) => {
-
                 let receivedData
                 if(actionName !== 'error') {
                     receivedData = [data[0], actionName, modelName]

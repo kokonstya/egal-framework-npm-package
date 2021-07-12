@@ -4,6 +4,10 @@ export class EventObserver {
   private static instance: EventObserver | null;
   private modelName: string | undefined;
 
+  private constructor() {
+    console.log("constructor called!");
+  }
+
   subscribe(modelName: string, fn: any) {
     return observers.findIndex((item) => item.modelName === modelName) === -1 && observers.push({modelName, fn});
   }

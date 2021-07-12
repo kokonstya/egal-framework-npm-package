@@ -9,7 +9,7 @@ const DataFormatter_1 = require("./DataFormatter");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 const GlobalVariables_1 = require("../GlobalVariables");
 const StoreCreator_1 = require("../Store/StoreCreator");
-const observer = new Observer_1.EventObserver();
+const observer = Observer_1.EventObserver.getInstance();
 class Model {
     constructor(modelName, username, password) {
         this.modelName = modelName;
@@ -29,8 +29,8 @@ class Model {
         // this.setObserver();
     }
     createStore() {
-        this.test = new StoreCreator_1.StoreCreator().createStore();
-        this.test.initStore(this.modelName);
+        this.storeCreator = new StoreCreator_1.StoreCreator().createStore();
+        this.storeCreator.initStore(this.modelName);
     }
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие

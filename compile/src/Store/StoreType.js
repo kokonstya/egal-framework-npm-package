@@ -4,4 +4,3 @@ exports.StoreType = void 0;
 class StoreType {
 }
 exports.StoreType = StoreType;
-StoreType.getInstance = () => { };

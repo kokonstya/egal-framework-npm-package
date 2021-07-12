@@ -10,7 +10,7 @@ import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
 import {StoreCreator} from "../Store/StoreCreator";
 
-const observer = new EventObserver();
+const observer:EventObserver = EventObserver.getInstance();
 
 export class Model implements ModelInterface {
     private readonly modelName: string;
@@ -27,7 +27,7 @@ export class Model implements ModelInterface {
     private allModelsMetadata: string | object;
     private tokenUst: boolean;
     private tokenUmt: boolean;
-    private test: any
+    private storeCreator: any
     constructor(modelName: string, username: string, password: string) {
         this.modelName = modelName;
         this.username = username;
@@ -47,8 +47,8 @@ export class Model implements ModelInterface {
     }
 
     createStore(){
-        this.test = new StoreCreator().createStore()
-        this.test.initStore(this.modelName)
+        this.storeCreator = new StoreCreator().createStore()
+        this.storeCreator.initStore(this.modelName)
     }
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие

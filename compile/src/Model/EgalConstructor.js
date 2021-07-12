@@ -5,13 +5,14 @@ const Model_1 = require("./Model");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 class EgalConstructor {
     constructor(modelParams) {
+        this.egalObserver = Observer_1.EventObserver.getInstance();
         this.modelName = modelParams.modelName;
         this.userName = modelParams.userName;
         this.password = modelParams.password;
         this.url = modelParams.url;
         this.connectionType = modelParams.connectionType;
         this.egalModel = new Model_1.Model(this.modelName, this.userName, this.password);
-        this.egalObserver = new Observer_1.EventObserver();
+        // this.egalObserver = EventObserver.getInstance()
         this.initModel();
     }
     initModel() {

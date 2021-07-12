@@ -7,16 +7,17 @@ class VueStore extends StoreType_1.StoreType {
     constructor() {
         super();
     }
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new VueStore();
-        }
-        return this.instance;
-    }
+    // static getInstance() {
+    //     if (!this.instance) {
+    //         this.instance = new VueStore();
+    //     }
+    //     return this.instance;
+    // }
     initStore(modelName) {
         let modelStoreInit = new PiniaStore_1.PiniaStore(modelName);
         this.modelStore = modelStoreInit.egalStore;
-        console.log('init store in vue store', modelName);
+        this.modelStore.modelItems;
+        console.log('init store in vue store', this.modelStore.storeId);
     }
     refreshStore() {
         this.modelStore.$state = {};

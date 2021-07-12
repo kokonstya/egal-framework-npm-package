@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventObserver = exports.observers = void 0;
 exports.observers = [];
 class EventObserver {
+    constructor() {
+        console.log("constructor called!");
+    }
     subscribe(modelName, fn) {
         return exports.observers.findIndex((item) => item.modelName === modelName) === -1 && exports.observers.push({ modelName, fn });
     }

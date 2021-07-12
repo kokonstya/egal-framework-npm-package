@@ -8,7 +8,7 @@ const Store_1 = require("./Store");
 class StoreCreator {
     createStore() {
         // let projectFramework = process.env.VUE_APP_ENV
-        let projectFramework = 'react';
+        let projectFramework = 'vue';
         switch (projectFramework) {
             case 'vue':
                 return new VueStore_1.VueStore();
