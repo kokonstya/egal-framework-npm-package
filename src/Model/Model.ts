@@ -13,9 +13,9 @@ import {StoreCreator} from "../Store/StoreCreator";
 const observer:EventObserver = EventObserver.getInstance();
 
 export class Model implements ModelInterface {
-    private readonly modelName: string;
-    private readonly username: string;
-    private readonly password: string;
+    public modelName: string;
+    public username: string;
+    public password: string;
     private modelMetaData!: MetaDataInterface;
     private readonly modelItems: (string | object)[];
     private modelActionList: string[];

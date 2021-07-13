@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EgalConstructor = void 0;
 const Model_1 = require("./Model");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
-class EgalConstructor {
+class EgalConstructor extends Model_1.Model {
     constructor(modelParams) {
+        super(modelParams.modelName, modelParams.userName, modelParams.password);
         this.egalObserver = Observer_1.EventObserver.getInstance();
         this.modelName = modelParams.modelName;
         this.userName = modelParams.userName;
@@ -12,7 +13,6 @@ class EgalConstructor {
         this.url = modelParams.url;
         this.connectionType = modelParams.connectionType;
         this.egalModel = new Model_1.Model(this.modelName, this.userName, this.password);
-        // this.egalObserver = EventObserver.getInstance()
         this.initModel();
     }
     initModel() {

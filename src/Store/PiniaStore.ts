@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueCompositionApi from '@vue/composition-api'
 import {defineStore, createPinia, PiniaPlugin} from 'pinia'
+const pinia:any = createPinia()
 Vue.use(VueCompositionApi)
 Vue.use(PiniaPlugin)
-const pinia = createPinia()
+Vue.use(pinia)
+
 
 export class PiniaStore {
     storeId: string

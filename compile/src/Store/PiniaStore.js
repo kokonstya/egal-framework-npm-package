@@ -7,9 +7,10 @@ exports.PiniaStore = void 0;
 const vue_1 = __importDefault(require("vue"));
 const composition_api_1 = __importDefault(require("@vue/composition-api"));
 const pinia_1 = require("pinia");
+const pinia = pinia_1.createPinia();
 vue_1.default.use(composition_api_1.default);
 vue_1.default.use(pinia_1.PiniaPlugin);
-const pinia = pinia_1.createPinia();
+vue_1.default.use(pinia);
 class PiniaStore {
     constructor(storeId) {
         this.egalStore = pinia_1.defineStore({
