@@ -9,13 +9,12 @@ import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observe
 import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
 
-
-const observer = new EventObserver();
+const observer:EventObserver = EventObserver.getInstance();
 
 export class Model implements ModelInterface {
-    private readonly modelName: string;
-    private readonly username: string;
-    private readonly password: string;
+    public modelName: string;
+    public username: string;
+    public password: string;
     private modelMetaData!: MetaDataInterface;
     private readonly modelItems: (string | object)[];
     private modelActionList: string[];
@@ -27,7 +26,7 @@ export class Model implements ModelInterface {
     private allModelsMetadata: string | object;
     private tokenUst: boolean;
     private tokenUmt: boolean;
-
+    private storeCreator: any
     constructor(modelName: string, username: string, password: string) {
         this.modelName = modelName;
         this.username = username;
@@ -44,7 +43,6 @@ export class Model implements ModelInterface {
         this.tokenUmt = false;
         // this.setObserver();
     }
-
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
      */

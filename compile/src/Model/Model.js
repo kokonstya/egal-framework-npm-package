@@ -8,7 +8,7 @@ const GetModelMetadataAction_1 = require("../Actions/GetMetadataAction/GetModelM
 const DataFormatter_1 = require("./DataFormatter");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 const GlobalVariables_1 = require("../GlobalVariables");
-const observer = new Observer_1.EventObserver();
+const observer = Observer_1.EventObserver.getInstance();
 class Model {
     constructor(modelName, username, password) {
         this.modelName = modelName;
