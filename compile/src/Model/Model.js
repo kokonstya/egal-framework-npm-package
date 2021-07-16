@@ -9,6 +9,7 @@ const DataFormatter_1 = require("./DataFormatter");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 const GlobalVariables_1 = require("../GlobalVariables");
 const StoreCreator_1 = require("../Store/StoreCreator");
+const ModelConnection_1 = require("./ModelConnection");
 const observer = Observer_1.EventObserver.getInstance();
 class Model {
     constructor(modelName, username, password) {
@@ -70,14 +71,13 @@ class Model {
     //         }
     //     });
     // }
-    static setConnectionType(connectionType, callToAction) {
-        if (connectionType === 'socket') {
-            callToAction.socketConnect();
-        }
-        else {
-            callToAction.axiosConnect();
-        }
-    }
+    // private static setConnectionType(connectionType: string, callToAction: any) {
+    //     if (connectionType === 'socket') {
+    //         callToAction.socketConnect();
+    //     } else {
+    //         callToAction.axiosConnect();
+    //     }
+    // }
     /**
      * Получение метаданных модели
      * @param microserviceName
@@ -85,7 +85,8 @@ class Model {
      */
     actionGetMetadata(microserviceName, connectionType) {
         const initializeGetMetadataRequest = new GetModelMetadataAction_1.GetModelMetadataAction(this.username, this.password, microserviceName, 'getMetadata', this.modelName);
-        Model.setConnectionType(connectionType, initializeGetMetadataRequest);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetMetadataRequest);
+        // Model.setConnectionType(connectionType, initializeGetMetadataRequest);
     }
     /**
      * Получение данных модели с возможными параметрами, юзер передает все данные вместе, но в экшен их нужно передавать отдельно
@@ -105,7 +106,8 @@ class Model {
         if (perPage !== undefined && page !== undefined) {
             initializeGetItems.actionParameters.setPagination(perPage, page);
         }
-        Model.setConnectionType(connectionType, initializeGetItems);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetItems);
+        // Model.setConnectionType(connectionType, initializeGetItems);
     }
     /**
      * Отличается от getItems тем, что отдельно должен быть передан айди нужной записи
@@ -122,7 +124,8 @@ class Model {
         initializeGetItem.actionParameters.filters(filter);
         initializeGetItem.actionParameters.orders(orders);
         initializeGetItem.actionParameters.setId(id);
-        Model.setConnectionType(connectionType, initializeGetItem);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetItem);
+        // Model.setConnectionType(connectionType, initializeGetItem);
     }
     /**
      * Экшен обновления записи
@@ -132,7 +135,8 @@ class Model {
      */
     actionUpdate(microserviceName, connectionType, actionParams) {
         const initializeActionUpdate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'update', actionParams);
-        Model.setConnectionType(connectionType, initializeActionUpdate);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdate);
+        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
     /**
      *
@@ -141,8 +145,9 @@ class Model {
      * @param actionParams
      */
     actionUpdateMany(microserviceName, connectionType, actionParams) {
-        const initializeActionUpdate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'updateMany', actionParams);
-        Model.setConnectionType(connectionType, initializeActionUpdate);
+        const initializeActionUpdateMany = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'updateMany', actionParams);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdateMany);
+        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
     /**
      * Экшен обновляет записи, соответствующие заданным фильтрам
@@ -152,7 +157,8 @@ class Model {
      */
     actionUpdateManyWithFilter(microserviceName, connectionType, actionParams) {
         const initializeActionUpdateManyWithFilter = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'updateManyRaw', actionParams);
-        Model.setConnectionType(connectionType, initializeActionUpdateManyWithFilter);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdateManyWithFilter);
+        // Model.setConnectionType(connectionType, initializeActionUpdateManyWithFilter);
     }
     /**
      * Экшен создания записи
@@ -163,7 +169,8 @@ class Model {
      */
     actionCreate(microserviceName, connectionType, actionParams, channelParameters) {
         const initializeActionCreate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'create', actionParams, channelParameters);
-        Model.setConnectionType(connectionType, initializeActionCreate);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCreate);
+        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
     /**
      *
@@ -172,8 +179,9 @@ class Model {
      * @param actionParams
      */
     actionCreateMany(microserviceName, connectionType, actionParams) {
-        const initializeActionCreate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'createMany', actionParams);
-        Model.setConnectionType(connectionType, initializeActionCreate);
+        const initializeActionCreateMany = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'createMany', actionParams);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCreateMany);
+        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
     /**
      * Экшен удаления записи
@@ -183,7 +191,8 @@ class Model {
      */
     actionDelete(microserviceName, connectionType, actionParams) {
         const initializeActionDelete = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'delete', actionParams);
-        Model.setConnectionType(connectionType, initializeActionDelete);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDelete);
+        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
     /**
      *
@@ -192,8 +201,9 @@ class Model {
      * @param actionParams
      */
     actionDeleteMany(microserviceName, connectionType, actionParams) {
-        const initializeActionDelete = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'deleteMany', actionParams);
-        Model.setConnectionType(connectionType, initializeActionDelete);
+        const initializeActionDeleteMany = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'deleteMany', actionParams);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDeleteMany);
+        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
     /**
      * Экшен удаляет записи, соответствующие заданным фильтрам
@@ -203,7 +213,8 @@ class Model {
      */
     actionDeleteManyWithFilter(microserviceName, connectionType, actionParams) {
         const initializeActionDeleteManyWithFilter = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'deleteManyRaw', actionParams);
-        Model.setConnectionType(connectionType, initializeActionDeleteManyWithFilter);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDeleteManyWithFilter);
+        // Model.setConnectionType(connectionType, initializeActionDeleteManyWithFilter);
     }
     /**
      *
@@ -214,7 +225,8 @@ class Model {
      */
     actionCustom(microserviceName, actionName, connectionType, actionParams) {
         const initializeActionCustom = new CustomAction_1.CustomAction(this.username, this.password, microserviceName, this.modelName, actionName, actionParams);
-        Model.setConnectionType(connectionType, initializeActionCustom);
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCustom);
+        // Model.setConnectionType(connectionType, initializeActionCustom);
     }
     /**
      *   позволяет получить метадату текущей модели

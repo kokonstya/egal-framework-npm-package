@@ -1,16 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PiniaStore = void 0;
-const vue_1 = __importDefault(require("vue"));
-const composition_api_1 = __importDefault(require("@vue/composition-api"));
+// @ts-ignore
+const vue_1 = require("vue");
 const pinia_1 = require("pinia");
 const pinia = pinia_1.createPinia();
-vue_1.default.use(composition_api_1.default);
-vue_1.default.use(pinia_1.PiniaPlugin);
-vue_1.default.use(pinia);
 class PiniaStore {
     constructor(storeId) {
         this.egalStore = pinia_1.defineStore({
@@ -22,6 +16,14 @@ class PiniaStore {
                     modelMetadata: {}
                 };
             },
+            getters: {
+                getReceivedItems() {
+                    return this.modelItems;
+                },
+                getModelMetadata() {
+                    return this.modelMetadata;
+                }
+            },
             actions: {
                 getItems() { }
             }
@@ -30,3 +32,5 @@ class PiniaStore {
     }
 }
 exports.PiniaStore = PiniaStore;
+const app = vue_1.createApp(PiniaStore);
+app.use(pinia);

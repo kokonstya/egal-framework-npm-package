@@ -9,6 +9,7 @@ import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observe
 import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
 import {StoreCreator} from "../Store/StoreCreator";
+import {ModelConnection} from "./ModelConnection";
 
 const observer:EventObserver = EventObserver.getInstance();
 
@@ -46,7 +47,7 @@ export class Model implements ModelInterface {
         // this.setObserver();
     }
 
-    createStore(){
+    createStore() {
         this.storeCreator = new StoreCreator().createStore()
         this.storeCreator.initStore(this.modelName)
     }
@@ -89,13 +90,13 @@ export class Model implements ModelInterface {
     //     });
     // }
 
-    private static setConnectionType(connectionType: string, callToAction: any) {
-        if (connectionType === 'socket') {
-            callToAction.socketConnect();
-        } else {
-            callToAction.axiosConnect();
-        }
-    }
+    // private static setConnectionType(connectionType: string, callToAction: any) {
+    //     if (connectionType === 'socket') {
+    //         callToAction.socketConnect();
+    //     } else {
+    //         callToAction.axiosConnect();
+    //     }
+    // }
 
     /**
      * Получение метаданных модели
@@ -110,7 +111,8 @@ export class Model implements ModelInterface {
             'getMetadata',
             this.modelName
         );
-        Model.setConnectionType(connectionType, initializeGetMetadataRequest);
+        new ModelConnection().createConnection(connectionType, initializeGetMetadataRequest)
+        // Model.setConnectionType(connectionType, initializeGetMetadataRequest);
     }
 
     /**
@@ -139,7 +141,8 @@ export class Model implements ModelInterface {
         if (perPage !== undefined && page !== undefined) {
             initializeGetItems.actionParameters.setPagination(perPage, page);
         }
-        Model.setConnectionType(connectionType, initializeGetItems);
+        new ModelConnection().createConnection(connectionType, initializeGetItems)
+        // Model.setConnectionType(connectionType, initializeGetItems);
     }
 
     /**
@@ -164,7 +167,8 @@ export class Model implements ModelInterface {
         initializeGetItem.actionParameters.filters(filter);
         initializeGetItem.actionParameters.orders(orders);
         initializeGetItem.actionParameters.setId(id);
-        Model.setConnectionType(connectionType, initializeGetItem);
+        new ModelConnection().createConnection(connectionType, initializeGetItem)
+        // Model.setConnectionType(connectionType, initializeGetItem);
     }
 
     /**
@@ -186,7 +190,8 @@ export class Model implements ModelInterface {
             'update',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionUpdate);
+        new ModelConnection().createConnection(connectionType, initializeActionUpdate)
+        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
 
     /**
@@ -201,7 +206,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
-        const initializeActionUpdate = new CRUDAction(
+        const initializeActionUpdateMany = new CRUDAction(
             this.username,
             this.password,
             microserviceName,
@@ -209,7 +214,8 @@ export class Model implements ModelInterface {
             'updateMany',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionUpdate);
+        new ModelConnection().createConnection(connectionType, initializeActionUpdateMany)
+        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
 
     /**
@@ -231,7 +237,8 @@ export class Model implements ModelInterface {
             'updateManyRaw',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionUpdateManyWithFilter);
+        new ModelConnection().createConnection(connectionType, initializeActionUpdateManyWithFilter)
+        // Model.setConnectionType(connectionType, initializeActionUpdateManyWithFilter);
     }
 
     /**
@@ -256,7 +263,8 @@ export class Model implements ModelInterface {
             actionParams,
             channelParameters
         );
-        Model.setConnectionType(connectionType, initializeActionCreate);
+        new ModelConnection().createConnection(connectionType, initializeActionCreate)
+        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
 
     /**
@@ -271,7 +279,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
-        const initializeActionCreate = new CRUDAction(
+        const initializeActionCreateMany = new CRUDAction(
             this.username,
             this.password,
             microserviceName,
@@ -279,7 +287,8 @@ export class Model implements ModelInterface {
             'createMany',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionCreate);
+        new ModelConnection().createConnection(connectionType, initializeActionCreateMany)
+        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
 
     /**
@@ -301,7 +310,8 @@ export class Model implements ModelInterface {
             'delete',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionDelete);
+        new ModelConnection().createConnection(connectionType, initializeActionDelete)
+        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
 
     /**
@@ -316,7 +326,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: string[]
     ) {
-        const initializeActionDelete = new CRUDAction(
+        const initializeActionDeleteMany = new CRUDAction(
             this.username,
             this.password,
             microserviceName,
@@ -324,7 +334,8 @@ export class Model implements ModelInterface {
             'deleteMany',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionDelete);
+        new ModelConnection().createConnection(connectionType, initializeActionDeleteMany)
+        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
 
     /**
@@ -346,7 +357,8 @@ export class Model implements ModelInterface {
             'deleteManyRaw',
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionDeleteManyWithFilter);
+        new ModelConnection().createConnection(connectionType, initializeActionDeleteManyWithFilter)
+        // Model.setConnectionType(connectionType, initializeActionDeleteManyWithFilter);
     }
 
     /**
@@ -371,7 +383,8 @@ export class Model implements ModelInterface {
             actionName,
             actionParams
         );
-        Model.setConnectionType(connectionType, initializeActionCustom);
+        new ModelConnection().createConnection(connectionType, initializeActionCustom)
+        // Model.setConnectionType(connectionType, initializeActionCustom);
     }
 
     /**
