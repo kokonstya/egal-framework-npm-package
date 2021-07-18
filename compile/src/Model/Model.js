@@ -36,41 +36,6 @@ class Model {
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
      */
-    // setObserver() {
-    //     observer.subscribe(this.modelName, (data: any, actionName?: string) => {
-    //         if (data !== 'Start Processing' && data !== 'Session expired!') {
-    //             switch (actionName) {
-    //                 case 'getItems':
-    //                     this.modelItems.push(data);
-    //                     break;
-    //                 case 'getAllModelsMetadata':
-    //                     this.allModelsMetadata = data;
-    //                     break;
-    //                 case 'getMetadata':
-    //                     this.modelMetaData.push(data);
-    //                     break;
-    //                 // case 'create':
-    //                 // case 'update':
-    //                 // case 'delete':
-    //                 // case 'createMany':
-    //                 // case 'updateMany':
-    //                 // case 'deleteMany':
-    //                 // case 'updateManyRaw':
-    //                 // case 'deleteManyRaw':
-    //                 //     this.actionGetItems(this.modelName, 'socket', actionName);
-    //                 //     break;
-    //                 case 'loginByEmailAndPassword':
-    //                     setCookie('umt', data[0])
-    //                     break;
-    //                 case 'loginToService':
-    //                     setCookie('mandate', data[0])
-    //             }
-    //         }
-    //         if (data === 'Session expired!') {
-    //             deleteAllCookies()
-    //         }
-    //     });
-    // }
     // private static setConnectionType(connectionType: string, callToAction: any) {
     //     if (connectionType === 'socket') {
     //         callToAction.socketConnect();
@@ -99,14 +64,15 @@ class Model {
      * @param perPage
      */
     actionGetItems(microserviceName, connectionType, perPage, page, filter, withs, orders) {
-        const initializeGetItems = new GetItemsAction_1.GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
-        initializeGetItems.actionParameters.with(withs);
-        initializeGetItems.actionParameters.filters(filter);
-        initializeGetItems.actionParameters.orders(orders);
-        if (perPage !== undefined && page !== undefined) {
-            initializeGetItems.actionParameters.setPagination(perPage, page);
-        }
-        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetItems);
+        this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType, perPage, page, filter, withs, orders);
+        // const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
+        // initializeGetItems.actionParameters.with(withs)
+        // initializeGetItems.actionParameters.filters(filter);
+        // initializeGetItems.actionParameters.orders(orders);
+        // if (perPage !== undefined && page !== undefined) {
+        //     initializeGetItems.actionParameters.setPagination(perPage, page);
+        // }
+        // new ModelConnection().createConnection(connectionType, initializeGetItems)
         // Model.setConnectionType(connectionType, initializeGetItems);
     }
     /**

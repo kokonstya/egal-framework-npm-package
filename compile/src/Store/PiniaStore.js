@@ -4,6 +4,8 @@ exports.PiniaStore = void 0;
 // @ts-ignore
 const vue_1 = require("vue");
 const pinia_1 = require("pinia");
+const GetItemsAction_1 = require("../Actions/GetItemsAction/GetItemsAction");
+const ModelConnection_1 = require("../Model/ModelConnection");
 const pinia = pinia_1.createPinia();
 class PiniaStore {
     constructor(storeId) {
@@ -25,7 +27,16 @@ class PiniaStore {
                 }
             },
             actions: {
-                getItems() { }
+                getItems(username, password, microserviceName, modelName, actionName, connectionType, perPage, page, filter, withs, orders) {
+                    const initializeGetItems = new GetItemsAction_1.GetItemsAction(username, password, microserviceName, modelName, actionName);
+                    initializeGetItems.actionParameters.with(withs);
+                    initializeGetItems.actionParameters.filters(filter);
+                    initializeGetItems.actionParameters.orders(orders);
+                    if (perPage !== undefined && page !== undefined) {
+                        initializeGetItems.actionParameters.setPagination(perPage, page);
+                    }
+                    new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetItems);
+                }
             }
         });
         this.storeId = storeId;

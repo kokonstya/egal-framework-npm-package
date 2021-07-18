@@ -11,7 +11,8 @@ class StoreCreator {
         let projectFramework = 'vue';
         switch (projectFramework) {
             case 'vue':
-                return new VueStore_1.VueStore();
+                const vueStore = VueStore_1.VueStore.getInstance();
+                return vueStore;
             case 'react':
                 return new Store_1.Store();
             default:
