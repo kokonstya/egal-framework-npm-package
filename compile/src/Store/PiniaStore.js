@@ -1,20 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PiniaStore = void 0;
-// @ts-ignore
-const vue_1 = require("vue");
 const pinia_1 = require("pinia");
 const GetItemsAction_1 = require("../Actions/GetItemsAction/GetItemsAction");
 const ModelConnection_1 = require("../Model/ModelConnection");
-const pinia = pinia_1.createPinia();
 class PiniaStore {
     constructor(storeId) {
+        this.storeId = storeId;
         this.egalStore = pinia_1.defineStore({
             // @ts-ignore
             id: this.storeId,
             state() {
                 return {
-                    modelItems: ['hui'],
+                    modelItems: ['hhh'],
                     modelMetadata: {}
                 };
             },
@@ -39,9 +37,6 @@ class PiniaStore {
                 }
             }
         });
-        this.storeId = storeId;
     }
 }
 exports.PiniaStore = PiniaStore;
-const app = vue_1.createApp(PiniaStore);
-app.use(pinia);
