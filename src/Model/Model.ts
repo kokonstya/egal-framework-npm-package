@@ -99,9 +99,9 @@ export class Model implements ModelInterface {
         withs?: string | string[],
         orders?: string[][]
     ) {
+        console.log('action get items')
         this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType,
             perPage, page, filter, withs, orders)
-
         // const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
         // initializeGetItems.actionParameters.with(withs)
         // initializeGetItems.actionParameters.filters(filter);

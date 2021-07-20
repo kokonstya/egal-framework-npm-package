@@ -19,6 +19,7 @@ class ActionMessage {
         this.socketRequest = new SocketRequest_1.SocketRequest(this.userName, this.password, this.serviceName, this.actionName, this.modelName, this.actionParameters, this.channelParameters);
     }
     axiosConnect() {
+        console.log('axios connect');
         this.httpRequest
             .axiosConnect(this.serviceName, this.modelName, this.actionName, this.httpMethod, this.actionParameters)
             .then((response) => {

@@ -64,6 +64,7 @@ class Model {
      * @param perPage
      */
     actionGetItems(microserviceName, connectionType, perPage, page, filter, withs, orders) {
+        console.log('action get items');
         this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType, perPage, page, filter, withs, orders);
         // const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
         // initializeGetItems.actionParameters.with(withs)

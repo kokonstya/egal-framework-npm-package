@@ -50,6 +50,7 @@ export class ActionMessage implements ActionMessageInterface {
     }
 
     axiosConnect() {
+        console.log('axios connect')
         this.httpRequest
             .axiosConnect(
                 this.serviceName,
