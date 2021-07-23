@@ -1,5 +1,7 @@
 import {EgalConstructor} from "./index";
 
-let model = new EgalConstructor({modelName:'name', userName:'admin', password:'password', url:'url', connectionType: 'axios'})
-model.actionGetItems('monolit', 'axios')
-console.log(model, 'store')
+
+let model = new EgalConstructor({modelName:'Load', userName:'admin', password:'password', url:'http://breaker-develop.sputnikfund.ru/api', connectionType: 'axios'})
+// model.actionGetItems('monolit', 'axios')
+let getItem = model.deleteItemFromStore('id', 2)
+console.log(getItem, 'store')

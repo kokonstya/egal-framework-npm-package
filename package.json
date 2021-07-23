@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node index.js",
+    "start": "tsc && node store.js",
     "watch-and-run": "tsc -w & nodemon -q -w src index.js",
     "dev:watch": "nodemon --watch ./src/**/* -e ts,tsx --exec ts-node index.ts",
     "serve": "vue-cli-service serve",
@@ -36,6 +36,7 @@
     "axios": "^0.21.1",
     "eslint": "^7.22.0",
     "madge": "^4.0.2",
+    "pinia": "^2.0.0-beta.5",
     "nodemon": "^2.0.7"
   }
 }

@@ -13,6 +13,13 @@ import {ActionMessage} from './src/Actions/ActionMessage';
 import {Model} from "./src/Model/Model";
 import {GlobalVariables} from "./src/GlobalVariables";
 import {EgalConstructor} from "./src/Model/EgalConstructor";
+import {PiniaStore} from "./src/Store/PiniaStore";
+
+import {createApp} from "vue";
+import {createPinia} from "pinia";
+const app = createApp({})
+const pinia = createPinia()
+app.use(pinia)
 
 export default {
     AuthAction,

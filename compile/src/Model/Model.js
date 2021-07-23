@@ -36,13 +36,9 @@ class Model {
     /**
      * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
      */
-    // private static setConnectionType(connectionType: string, callToAction: any) {
-    //     if (connectionType === 'socket') {
-    //         callToAction.socketConnect();
-    //     } else {
-    //         callToAction.axiosConnect();
-    //     }
-    // }
+    deleteItemFromStore(propertyName, propertyValue) {
+        this.storeCreator.getBy(propertyName, propertyValue);
+    }
     /**
      * Получение метаданных модели
      * @param microserviceName
@@ -65,15 +61,16 @@ class Model {
      */
     actionGetItems(microserviceName, connectionType, perPage, page, filter, withs, orders) {
         console.log('action get items');
-        this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType, perPage, page, filter, withs, orders);
-        // const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
-        // initializeGetItems.actionParameters.with(withs)
-        // initializeGetItems.actionParameters.filters(filter);
-        // initializeGetItems.actionParameters.orders(orders);
-        // if (perPage !== undefined && page !== undefined) {
-        //     initializeGetItems.actionParameters.setPagination(perPage, page);
-        // }
-        // new ModelConnection().createConnection(connectionType, initializeGetItems)
+        // this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType,
+        //     perPage, page, filter, withs, orders)
+        const initializeGetItems = new GetItemsAction_1.GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
+        initializeGetItems.actionParameters.with(withs);
+        initializeGetItems.actionParameters.filters(filter);
+        initializeGetItems.actionParameters.orders(orders);
+        if (perPage !== undefined && page !== undefined) {
+            initializeGetItems.actionParameters.setPagination(perPage, page);
+        }
+        new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetItems);
         // Model.setConnectionType(connectionType, initializeGetItems);
     }
     /**
