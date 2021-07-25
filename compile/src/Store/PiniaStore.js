@@ -16,16 +16,7 @@ class PiniaStore {
             id: this.storeId,
             state() {
                 return {
-                    modelItems: [
-                        {
-                            id: 1,
-                            name: 'name1'
-                        },
-                        {
-                            id: 2,
-                            name: 'name2'
-                        }
-                    ],
+                    modelItems: [],
                     modelMetadata: {}
                 };
             },
@@ -46,40 +37,21 @@ class PiniaStore {
                         return item[propertyName] === propertyValue;
                     });
                     console.log(filteredItem);
+                },
+                deleteItem(itemId) {
+                    // @ts-ignore
+                    this.modelItems = this.modelItems.filter(item => item.id !== itemId);
+                    console.log(this.modelItems, 'model items pinia');
+                },
+                addItem(item) {
+                    // @ts-ignore
+                    this.modelItems.push(item);
+                    console.log(this.modelItems, 'add store item');
+                },
+                getItems(object) {
+                    console.log(object, 'pinia get items');
                 }
-                // deleteItem() {
-                //     this.modelItems = []
-                //     console.log(this.modelItems, 'model items pinia')
-                // },
-                // addItem() {
-                //     this.modelItems.push({id: 3, name: 'name3'})
-                //     console.log(this.modelItems, 'add store item')
-                // }
-                // getItems(object:object) {
-                //     console.log(object, 'pinia get items')
-                // }
-                // getItems(username:string, password:string, microserviceName:string, modelName:string, actionName:string,
-                //          connectionType:string,
-                //          perPage?:number, page?:number,
-                //          filter?: (string | object)[] | undefined,
-                //          withs?: string | string[],
-                //          orders?: string[][]) {
-                //     console.log('get items pinia')
-                //     const initializeGetItems = new GetItemsAction(username, password, microserviceName, modelName, actionName);
-                //     initializeGetItems.actionParameters.with(withs)
-                //     initializeGetItems.actionParameters.filters(filter);
-                //     initializeGetItems.actionParameters.orders(orders);
-                //     if (perPage !== undefined && page !== undefined) {
-                //         initializeGetItems.actionParameters.setPagination(perPage, page);
-                //     }
-                //     new ModelConnection().createConnection(connectionType, initializeGetItems)
-                // }
             }
-        });
-    }
-    getDataFromObserver() {
-        this.piniaObserver.subscribe(this.storeId, (data, actionName, modelName) => {
-            console.log(data, 'data from pinia observer');
         });
     }
 }

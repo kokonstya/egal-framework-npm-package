@@ -4,7 +4,7 @@ import {VueStore} from "./VueStore";
 import {Store} from "./Store";
 
 export class StoreCreator {
-    public createStore() {
+    createStore() {
         // let projectFramework = process.env.VUE_APP_ENV
         let projectFramework = 'vue'
         switch (projectFramework) {

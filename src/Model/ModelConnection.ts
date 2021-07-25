@@ -1,5 +1,5 @@
 export class ModelConnection {
-    public createConnection(connectionType:string, userRequest:any) {
+    createConnection(connectionType:string, userRequest:any) {
         switch(connectionType) {
             case 'axios':
                 return userRequest.axiosConnect();

@@ -27,17 +27,31 @@ class Model {
         this.tokenUst = false;
         this.tokenUmt = false;
         this.createStore();
-        // this.setObserver();
+        this.initModelObserver();
+    }
+    initModelObserver() {
+        observer.subscribe(this.modelName, (data, actionName) => {
+            switch (actionName) {
+                case 'getItems':
+                    this.commitToStore(data);
+            }
+        });
     }
     createStore() {
         this.storeCreator = new StoreCreator_1.StoreCreator().createStore();
         this.storeCreator.initStore(this.modelName);
     }
-    /**
-     * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
-     */
-    deleteItemFromStore(propertyName, propertyValue) {
+    commitToStore(data) {
+        this.storeCreator.commitItemsToStore(data);
+    }
+    getItemFromStoreBy(propertyName, propertyValue) {
         this.storeCreator.getBy(propertyName, propertyValue);
+    }
+    addItemToStore(item) {
+        this.storeCreator.addToStore(item);
+    }
+    deleteItemFromStore(itemId) {
+        this.storeCreator.deleteFromStore(itemId);
     }
     /**
      * Получение метаданных модели

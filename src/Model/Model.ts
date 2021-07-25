@@ -14,9 +14,9 @@ import {ModelConnection} from "./ModelConnection";
 const observer:EventObserver = EventObserver.getInstance();
 
 export class Model implements ModelInterface {
-    public modelName: string;
-    public username: string;
-    public password: string;
+    modelName: string;
+    username: string;
+    password: string;
     private modelMetaData!: MetaDataInterface;
     private readonly modelItems: (string | object)[];
     private modelActionList: string[];
@@ -44,19 +44,35 @@ export class Model implements ModelInterface {
         this.tokenUst = false;
         this.tokenUmt = false;
         this.createStore()
-        // this.setObserver();
+        this.initModelObserver()
+    }
+
+    initModelObserver() {
+        observer.subscribe(this.modelName, (data:any, actionName:string) => {
+            switch(actionName) {
+                case 'getItems':
+                    this.commitToStore(data)
+            }
+        })
     }
 
     createStore() {
         this.storeCreator = new StoreCreator().createStore()
         this.storeCreator.initStore(this.modelName)
     }
-    /**
-     * инициализация обзервера, в зависимости от экшена инициализируется нужное событие
-     */
 
-    deleteItemFromStore(propertyName:string, propertyValue:any) {
+    commitToStore(data:any){
+        this.storeCreator.commitItemsToStore(data)
+    }
+
+    getItemFromStoreBy(propertyName:string, propertyValue:any) {
         this.storeCreator.getBy(propertyName, propertyValue)
+    }
+    addItemToStore(item: object) {
+        this.storeCreator.addToStore(item)
+    }
+    deleteItemFromStore(itemId: number | string) {
+        this.storeCreator.deleteFromStore(itemId)
     }
 
     /**

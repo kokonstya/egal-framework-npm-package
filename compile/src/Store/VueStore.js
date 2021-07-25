@@ -18,25 +18,17 @@ class VueStore extends StoreType_1.StoreType {
         this.modelStore = modelStoreInit.egalStore();
         console.log('init store in vue store', this.modelStore.modelItems);
     }
-    // getItems(username:string, password:string, microserviceName:string, modelName:string, actionName:string,
-    //          connectionType:string,
-    //          perPage?:number, page?:number,
-    //          filter?: (string | object)[] | undefined,
-    //          withs?: string | string[],
-    //          orders?: string[][]){
-    //     this.modelStore.getItems(username, password, microserviceName, modelName, actionName,
-    //         connectionType,
-    //         perPage, page,
-    //         filter,
-    //         withs,
-    //         orders)
-    //     console.log('get items')
-    // }
-    deleteItemFromStore() {
-        this.modelStore.deleteStoreItem();
+    commitItemsToStore(newItems) {
+        console.log(newItems, 'commit to store vue store');
+        this.modelStore.$patch({
+            modelItems: newItems
+        });
     }
-    addItemToStore() {
-        this.modelStore.addStoreItem();
+    deleteFromStore(itemId) {
+        this.modelStore.deleteItem(itemId);
+    }
+    addToStore(item) {
+        this.modelStore.addItem();
     }
     resetStore() {
         this.modelStore.$reset();

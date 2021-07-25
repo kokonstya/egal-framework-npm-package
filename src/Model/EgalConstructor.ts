@@ -5,9 +5,9 @@ import {EventObserver} from "../Actions/NetworkRequests/SocketConnection/Observe
 export class EgalConstructor extends Model {
     private readonly egalModel: Model
     private egalObserver: EventObserver = EventObserver.getInstance()
-    public modelName: string
-    public userName: string
-    public password: string
+    modelName: string
+    userName: string
+    password: string
     private readonly url: string
     private readonly connectionType: string
 

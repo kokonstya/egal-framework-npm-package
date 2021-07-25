@@ -13,7 +13,7 @@ export class Store extends StoreType {
         return this.instance;
     }
 
-    public initStore() {
+    initStore() {
         console.log('init store in store')
     }
 }
