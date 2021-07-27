@@ -31,11 +31,6 @@ var GlobalVariables_1 = require("./src/GlobalVariables");
 exports.GlobalVariables = GlobalVariables_1.GlobalVariables;
 var EgalConstructor_1 = require("./src/Model/EgalConstructor");
 exports.EgalConstructor = EgalConstructor_1.EgalConstructor;
-var vue_1 = require("vue");
-var pinia_1 = require("pinia");
-var app = vue_1.createApp({});
-var pinia = pinia_1.createPinia();
-app.use(pinia);
 exports["default"] = {
     AuthAction: AuthAction_1.AuthAction,
     GetItemsAction: GetItemsAction_1.GetItemsAction,

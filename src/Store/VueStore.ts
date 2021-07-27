@@ -18,13 +18,18 @@ export class VueStore extends StoreType {
      initStore(modelName:string) {
         let modelStoreInit = new PiniaStore(modelName)
         this.modelStore = modelStoreInit.egalStore()
-        console.log('init store in vue store', this.modelStore.modelItems )
     }
-    commitItemsToStore(newItems: object[]) {
-        console.log(newItems, 'commit to store vue store')
-        this.modelStore.$patch({
-            modelItems: newItems
-        })
+    commitItemsToStore(newItems: object[], actionName: string) {
+        if(actionName === 'getItems') {
+            this.modelStore.$patch({
+                modelItems: newItems
+            })
+        } else {
+            this.modelStore.$patch({
+                modelMetadata: newItems
+            })
+        }
+
     }
 
     deleteFromStore(itemId: number | string) {
@@ -32,7 +37,7 @@ export class VueStore extends StoreType {
     }
 
     addToStore(item: object) {
-        this.modelStore.addItem()
+        this.modelStore.addItem(item)
     }
 
     resetStore() {

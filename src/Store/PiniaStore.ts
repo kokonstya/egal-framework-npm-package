@@ -1,4 +1,5 @@
-import {createPinia, defineStore} from 'pinia'
+import {createPinia} from '../../pinia/src/createPinia'
+import {defineStore} from '../../pinia/src/store'
 import {createApp} from "vue";
 import {EventObserver} from "../Actions/NetworkRequests/SocketConnection/Observer";
 
@@ -17,15 +18,17 @@ export class PiniaStore {
             state() {
                 return {
                     modelItems: [],
-                    modelMetadata: {}
+                    modelMetadata: []
                 }
             },
             getters: {
-                getReceivedItems():any[] {
-                    return this.modelItems
+                getReceivedItems(state) {
+                    // @ts-ignore
+                    return state.modelItems
                 },
-                getModelMetadata():any {
-                    return this.modelMetadata
+                getModelMetadata(state) {
+                    // @ts-ignore
+                    return state.modelMetadata
                 },
 
             },
@@ -55,9 +58,4 @@ export class PiniaStore {
             }
         })
     }
-    // getDataFromObserver(){
-    //     this.piniaObserver.subscribe(this.storeId, (data:any, actionName:string, modelName:string) => {
-    //         console.log(data, 'data from pinia observer')
-    //     })
-    // }
 }

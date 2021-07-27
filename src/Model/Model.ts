@@ -6,7 +6,7 @@ import {GetModelMetadataAction} from '../Actions/GetMetadataAction/GetModelMetad
 import {DataFormatter} from './DataFormatter';
 import {MetaDataInterface} from './MetaDataInterface';
 import {EventObserver} from '../Actions/NetworkRequests/SocketConnection/Observer';
-import {GlobalVariables, setCookie, deleteAllCookies} from '../GlobalVariables';
+import {GlobalVariables} from '../GlobalVariables';
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
 import {StoreCreator} from "../Store/StoreCreator";
 import {ModelConnection} from "./ModelConnection";
@@ -17,6 +17,8 @@ export class Model implements ModelInterface {
     modelName: string;
     username: string;
     password: string;
+    microserviceName: string;
+    connectionType: string;
     private modelMetaData!: MetaDataInterface;
     private readonly modelItems: (string | object)[];
     private modelActionList: string[];
@@ -29,10 +31,13 @@ export class Model implements ModelInterface {
     private tokenUst: boolean;
     private tokenUmt: boolean;
     private storeCreator: any
-    constructor(modelName: string, username: string, password: string) {
+
+    constructor(modelName: string, username: string, password: string, microserviceName: string, connectionType: string) {
         this.modelName = modelName;
         this.username = username;
         this.password = password;
+        this.microserviceName = microserviceName;
+        this.connectionType = connectionType
         this.modelItems = [];
         this.modelActionList = [];
         this.modelValidationRules = {};
@@ -47,36 +52,90 @@ export class Model implements ModelInterface {
         this.initModelObserver()
     }
 
+    /**
+     * Function that inits model observer to commit items to store
+     */
+
     initModelObserver() {
         observer.subscribe(this.modelName, (data:any, actionName:string) => {
             switch(actionName) {
                 case 'getItems':
-                    this.commitToStore(data)
+                case 'getMetadata':
+                    this.commitToStore(data, actionName)
+                    break
+                case 'create':
+                case 'update':
+                case 'delete':
+                case 'createMany':
+                case 'updateMany':
+                case 'deleteMany':
+                case 'createManyRaw':
+                case 'updateManyRaw':
+                case 'deleteManyRaw':
+                    this.actionGetItems(this.microserviceName, this.connectionType)
+                    break
+                default:
+                    console.log('default')
+                    break
             }
         })
     }
+
+    /**
+     * function that inits a store for a chosen model
+     */
 
     createStore() {
         this.storeCreator = new StoreCreator().createStore()
         this.storeCreator.initStore(this.modelName)
     }
 
-    commitToStore(data:any){
-        this.storeCreator.commitItemsToStore(data)
+    /**
+     * Function commits items received from 'actionGetItems' to model's store
+     * @param data
+     */
+
+    commitToStore(data:any, actionName: string){
+        this.storeCreator.commitItemsToStore(data, actionName)
     }
+
+    /**
+     * Function that allows to receive items from store based on some parameter
+     * @param propertyName
+     * @param propertyValue
+     */
 
     getItemFromStoreBy(propertyName:string, propertyValue:any) {
         this.storeCreator.getBy(propertyName, propertyValue)
     }
+
+    /**
+     * Function that allows to add item to store, but not to database
+     * @param item
+     */
+
     addItemToStore(item: object) {
         this.storeCreator.addToStore(item)
     }
+
+    /**
+     * Function that allows to delete item from store, but not from database
+     * @param itemId
+     */
+
     deleteItemFromStore(itemId: number | string) {
         this.storeCreator.deleteFromStore(itemId)
     }
 
     /**
-     * Получение метаданных модели
+     * Function that allows to clear store
+     */
+    resetStore() {
+        this.storeCreator.resetStore()
+    }
+
+    /**
+     * Action for receiving model metadata
      * @param microserviceName
      * @param connectionType
      */
@@ -89,11 +148,10 @@ export class Model implements ModelInterface {
             this.modelName
         );
         new ModelConnection().createConnection(connectionType, initializeGetMetadataRequest)
-        // Model.setConnectionType(connectionType, initializeGetMetadataRequest);
     }
 
     /**
-     * Получение данных модели с возможными параметрами, юзер передает все данные вместе, но в экшен их нужно передавать отдельно
+     * Action for receiving model items with various params
      * @param microserviceName
      * @param connectionType
      * @param withs
@@ -112,8 +170,6 @@ export class Model implements ModelInterface {
         orders?: string[][]
     ) {
         console.log('action get items')
-        // this.storeCreator.getItems(this.username, this.password, microserviceName, this.modelName, 'getItems', connectionType,
-        //     perPage, page, filter, withs, orders)
         const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
         initializeGetItems.actionParameters.with(withs)
         initializeGetItems.actionParameters.filters(filter);
@@ -122,11 +178,10 @@ export class Model implements ModelInterface {
             initializeGetItems.actionParameters.setPagination(perPage, page);
         }
         new ModelConnection().createConnection(connectionType, initializeGetItems)
-        // Model.setConnectionType(connectionType, initializeGetItems);
     }
 
     /**
-     * Отличается от getItems тем, что отдельно должен быть передан айди нужной записи
+     * Action for receiving a single item based on its id
      * @param microserviceName
      * @param connectionType
      * @param id
@@ -148,11 +203,10 @@ export class Model implements ModelInterface {
         initializeGetItem.actionParameters.orders(orders);
         initializeGetItem.actionParameters.setId(id);
         new ModelConnection().createConnection(connectionType, initializeGetItem)
-        // Model.setConnectionType(connectionType, initializeGetItem);
     }
 
     /**
-     * Экшен обновления записи
+     * Action for updating an item
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -171,11 +225,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionUpdate)
-        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
 
     /**
-     *
+     * Action for updating several items
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -195,11 +248,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionUpdateMany)
-        // Model.setConnectionType(connectionType, initializeActionUpdate);
     }
 
     /**
-     * Экшен обновляет записи, соответствующие заданным фильтрам
+     * Action for updating several items based on user params
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -218,11 +270,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionUpdateManyWithFilter)
-        // Model.setConnectionType(connectionType, initializeActionUpdateManyWithFilter);
     }
 
     /**
-     * Экшен создания записи
+     * Action for item creation
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -244,11 +295,10 @@ export class Model implements ModelInterface {
             channelParameters
         );
         new ModelConnection().createConnection(connectionType, initializeActionCreate)
-        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
 
     /**
-     *
+     * Action for creating several items
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -268,11 +318,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionCreateMany)
-        // Model.setConnectionType(connectionType, initializeActionCreate);
     }
 
     /**
-     * Экшен удаления записи
+     * Action for deleting an item
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -291,11 +340,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionDelete)
-        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
 
     /**
-     *
+     * Action for deleting several items
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -315,11 +363,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionDeleteMany)
-        // Model.setConnectionType(connectionType, initializeActionDelete);
     }
 
     /**
-     * Экшен удаляет записи, соответствующие заданным фильтрам
+     * Action for deleting several items based on user params
      * @param microserviceName
      * @param connectionType
      * @param actionParams
@@ -338,11 +385,10 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionDeleteManyWithFilter)
-        // Model.setConnectionType(connectionType, initializeActionDeleteManyWithFilter);
     }
 
     /**
-     *
+     * Action that can be used for custom endpoints
      * @param microserviceName
      * @param actionName
      * @param connectionType
@@ -364,64 +410,14 @@ export class Model implements ModelInterface {
             actionParams
         );
         new ModelConnection().createConnection(connectionType, initializeActionCustom)
-        // Model.setConnectionType(connectionType, initializeActionCustom);
     }
 
     /**
-     *   позволяет получить метадату текущей модели
-     */
-    getModelMetadata() {
-        return this.modelMetaData;
-    }
-
-    /**
-     * позволяет получить список доступных модели экшенов (получается с бэка в составе метадаты)
-     */
-    getModelActionList() {
-        this.modelActionList = Object.keys(this.modelMetaData.actions_metadata);
-        return this.modelActionList;
-    }
-
-    /**
-     *  позволяет получить правила валидации для всех доступных филдов
-     */
-    getModelValidationRules() {
-        return this.modelValidationRules;
-    }
-
-    /**
-     *  позволяет получить расширинную информацию по каждому экшену
-     */
-    getModelActionsMetaData() {
-        this.modelActionsMetaData = this.modelMetaData.actions_metadata;
-        return this.modelActionsMetaData;
-    }
-
-    /**
-     *  позволяет получить филды с типом base
-     */
-    getModelDataBaseFields() {
-        this.databaseFields = this.modelMetaData.database_fields;
-        return this.databaseFields;
-    }
-
-    /**
-     *  позволяет получить филды с указанными типами
-     */
-    getModelFieldsWithTypes() {
-        this.fieldsWithTypes = this.modelMetaData.fields_with_types;
-        return this.fieldsWithTypes;
-    }
-
-    /**
-     * позволяет получить отфильтрованные список айтемов.
-     * в функцию передается массив с названиями филдов от пользователя (fields), массив всех айтемов,
-     * которые нужно отфильтровать (dataToFilter) и указание типа фильтрации (filterType): includes возвращаяет только филды,
-     * указанные в массиве, excludes исключает филды, указанные в массиве
+     * Function that allows to receive only certain fields.
      *
-     * @param fields
-     * @param filterType
-     * @param dataToFilter
+     * @param fields - a list of fields 'dataToFilter' that needs to be filtered by
+     * @param filterType - 'include' will return the list of fields from param 'fields', 'exclude' will return all the fields but those from 'fields' param.
+     * @param dataToFilter - a list of items that needs to be filtered by field
      */
 
     getSpecificFields(fields: string[], filterType: string, dataToFilter: object[]) {
@@ -430,21 +426,21 @@ export class Model implements ModelInterface {
     }
 
     /**
-     * позволяет получить уже запрошенные айтемы модели
+     * Function that allows to receive model items from store (if store is not empty)
      */
     getItems() {
         return this.modelItems;
     }
 
     /**
-     * позволяет получить уже запрошенную метадату всех моделей приложения
+     * Function that allows to receive model metadata from store (if store is not empty)
      */
     getAllModelsMetadata() {
         return this.allModelsMetadata;
     }
 
     /**
-     * Функция используется для установки основного домена при начале работы с моделью
+     * Function for setting base url to start working with model
      * @param URL
      * @param connectionType
      */
@@ -453,6 +449,10 @@ export class Model implements ModelInterface {
         if (connectionType === 'socket') GlobalVariables.socketBaseUrl = URL;
         GlobalVariables.httpBaseUrl = URL;
     }
+
+    /**
+     * Function allows to call disconnect on current socket connection
+     */
 
     socketDisconnect() {
         observer.broadcastSocketDisconnect('disconnect')

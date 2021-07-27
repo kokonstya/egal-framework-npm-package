@@ -31,11 +31,6 @@ const GlobalVariables_1 = require("./src/GlobalVariables");
 Object.defineProperty(exports, "GlobalVariables", { enumerable: true, get: function () { return GlobalVariables_1.GlobalVariables; } });
 const EgalConstructor_1 = require("./src/Model/EgalConstructor");
 Object.defineProperty(exports, "EgalConstructor", { enumerable: true, get: function () { return EgalConstructor_1.EgalConstructor; } });
-const vue_1 = require("vue");
-const pinia_1 = require("pinia");
-const app = vue_1.createApp({});
-const pinia = pinia_1.createPinia();
-app.use(pinia);
 exports.default = {
     AuthAction: AuthAction_1.AuthAction,
     GetItemsAction: GetItemsAction_1.GetItemsAction,

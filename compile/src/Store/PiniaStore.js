@@ -1,31 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PiniaStore = void 0;
-const pinia_1 = require("pinia");
+const createPinia_1 = require("../../pinia/src/createPinia");
+const store_1 = require("../../pinia/src/store");
 const vue_1 = require("vue");
 const Observer_1 = require("../Actions/NetworkRequests/SocketConnection/Observer");
 class PiniaStore {
     constructor(storeId) {
         this.app = vue_1.createApp(PiniaStore);
-        this.pinia = pinia_1.createPinia();
+        this.pinia = createPinia_1.createPinia();
         this.piniaObserver = Observer_1.EventObserver.getInstance();
         this.app.use(this.pinia);
         this.storeId = storeId;
-        this.egalStore = pinia_1.defineStore({
+        this.egalStore = store_1.defineStore({
             // @ts-ignore
             id: this.storeId,
             state() {
                 return {
                     modelItems: [],
-                    modelMetadata: {}
+                    modelMetadata: []
                 };
             },
             getters: {
-                getReceivedItems() {
-                    return this.modelItems;
+                getReceivedItems(state) {
+                    // @ts-ignore
+                    return state.modelItems;
                 },
-                getModelMetadata() {
-                    return this.modelMetadata;
+                getModelMetadata(state) {
+                    // @ts-ignore
+                    return state.modelMetadata;
                 },
             },
             actions: {

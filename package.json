@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node store.js",
+    "start": "tsc && node index.js",
     "watch-and-run": "tsc -w & nodemon -q -w src index.js",
     "dev:watch": "nodemon --watch ./src/**/* -e ts,tsx --exec ts-node index.ts",
     "serve": "vue-cli-service serve",
@@ -20,7 +20,6 @@
   "dependencies": {
     "@types/stompjs": "^2.3.4",
     "axios": "^0.21.1",
-    "pinia": "^2.0.0-beta.5",
     "prettier": "^2.2.1",
     "sockjs-client": "^1.5.1",
     "stompjs": "^2.3.3",
@@ -36,7 +35,6 @@
     "axios": "^0.21.1",
     "eslint": "^7.22.0",
     "madge": "^4.0.2",
-    "pinia": "^2.0.0-beta.5",
     "nodemon": "^2.0.7"
   }
 }

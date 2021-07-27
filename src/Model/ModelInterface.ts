@@ -1,5 +1,4 @@
 import {RoutingKeyParams} from "../Actions/Interfaces/RoutingKeyParams";
-import {Method} from "axios";
 
 export interface ModelInterface {
   actionGetMetadata(microserviceName: string, actionName: string, connectionType: string): void;
@@ -67,18 +66,6 @@ export interface ModelInterface {
       actionParams?: object
   ):void;
 
-  getModelMetadata(): void;
-
-  getModelActionList(): void;
-
-  getModelValidationRules(): void;
-
-  getModelActionsMetaData(): void;
-
-  getModelDataBaseFields(): string[];
-
-  getModelFieldsWithTypes(): object[];
-
   actionUpdateManyWithFilter(
     microserviceName: string,
     connectionType: string,
@@ -98,4 +85,8 @@ export interface ModelInterface {
   ): void;
 
   setBaseUrl(URL: string, connectionType: string): void;
+  getItemFromStoreBy(propertyName:string, propertyValue:any):void
+  addItemToStore(item: object):void;
+  deleteItemFromStore(itemId: number | string):void;
+  resetStore():void;
 }
