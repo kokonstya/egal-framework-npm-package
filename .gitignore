@@ -8,7 +8,7 @@ package-lock.json
 .vscode
 
 # Compiled js files from ts
-*.js
+/index.js
 src/*.js
 src/**/*.js
 
