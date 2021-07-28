@@ -21,10 +21,12 @@ export class GetItemsFilterParams {
     }
   }
 
+
   /**
    * Функция формирует массив с условиями для одного фильтра
    * @param filterItem
    */
+
   createDefaultObjectInstance(filterItem: {
     left: {
       field: string;
