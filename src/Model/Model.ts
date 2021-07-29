@@ -96,7 +96,7 @@ export class Model implements ModelInterface {
      */
 
     commitToStore(data:any, actionName: string){
-        this.storeCreator.commitItemsToStore(data, actionName)
+        this.storeCreator.commitItemsToStore(data, actionName, this.modelName)
     }
 
     /**

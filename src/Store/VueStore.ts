@@ -1,9 +1,11 @@
 import {StoreType} from "./StoreType";
 import {PiniaStore} from "./PiniaStore";
+import {EventObserver} from "../Actions/NetworkRequests/SocketConnection/Observer";
 
 export class VueStore extends StoreType {
     private static instance: VueStore | null;
     private modelStore:any
+    private vueObserver: EventObserver = EventObserver.getInstance()
     constructor() {
         super();
     }
@@ -19,15 +21,17 @@ export class VueStore extends StoreType {
         let modelStoreInit = new PiniaStore(modelName)
         this.modelStore = modelStoreInit.egalStore()
     }
-    commitItemsToStore(newItems: object[], actionName: string) {
+    commitItemsToStore(newItems: object[], actionName: string, modelName:string) {
         if(actionName === 'getItems') {
             this.modelStore.$patch({
                 modelItems: newItems
             })
+            this.vueObserver.broadcast(newItems, actionName, modelName)
         } else {
             this.modelStore.$patch({
                 modelMetadata: newItems
             })
+            this.vueObserver.broadcast(newItems, actionName, modelName)
         }
 
     }

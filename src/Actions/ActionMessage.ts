@@ -63,7 +63,7 @@ export class ActionMessage implements ActionMessageInterface {
                 let typedResponse: (string | object)[] = response as (string | object)[];
                 let action = typedResponse.splice(1, 1).toString();
                 let items = typedResponse.splice(0, 1);
-                observer.broadcast(items, action, typedResponse.toString());
+                // observer.broadcast(items, action, typedResponse.toString());
                 return response;
             })
             .catch((error) => {
