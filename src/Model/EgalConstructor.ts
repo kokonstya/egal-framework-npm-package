@@ -32,6 +32,7 @@ export class EgalConstructor extends Model {
     initModelObserver() {
         return new Promise((resolve, reject) => {
             this.egalObserver.subscribe(this.modelName, (data: any, actionName: string, modelName: string) => {
+                console.log('constructor log')
                 let receivedData
                 if (actionName !== 'error') {
                     receivedData = [data[0], actionName, modelName]

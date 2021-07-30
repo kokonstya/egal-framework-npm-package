@@ -49,14 +49,14 @@ export class Model implements ModelInterface {
         this.tokenUst = false;
         this.tokenUmt = false;
         this.createStore()
-        this.initModelObserver()
+        this.initObserver()
     }
 
     /**
      * Function that inits model observer to commit items to store
      */
 
-    initModelObserver() {
+    initObserver() {
         observer.subscribe(this.modelName, (data:any, actionName:string) => {
             switch(actionName) {
                 case 'getItems':

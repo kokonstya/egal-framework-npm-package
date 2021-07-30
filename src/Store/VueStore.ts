@@ -52,5 +52,4 @@ export class VueStore extends StoreType {
         this.modelStore.getBy(propertyName, propertyValue)
     }
 
-
 }
