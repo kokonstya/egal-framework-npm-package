@@ -49,6 +49,7 @@ class HttpRequest {
     //     })
     // }
     axiosConnect(serviceName, modelName, actionName, httpMethod, actionParameters) {
+        console.log(actionParameters, 'action parameters');
         let domain = GlobalVariables_1.GlobalVariables.httpBaseUrl ? GlobalVariables_1.GlobalVariables.httpBaseUrl : GlobalVariables_1.GlobalVariables.authBaseUrl;
         const instance = axios_1.default.create({
             headers: {
@@ -109,6 +110,7 @@ class HttpRequest {
                 data = actionManyParams;
             }
             else {
+                console.log(actionParameters);
                 data = actionParameters;
             }
             if (GlobalVariables_1.GlobalVariables.httpBaseUrl || GlobalVariables_1.GlobalVariables.authBaseUrl) {

@@ -59,6 +59,7 @@ export class HttpRequest {
         httpMethod: Method,
         actionParameters: ActionParameters | undefined
     ) {
+        console.log(actionParameters, 'action parameters')
         let domain = GlobalVariables.httpBaseUrl ? GlobalVariables.httpBaseUrl : GlobalVariables.authBaseUrl
         const instance = axios.create({
             headers: {
@@ -118,6 +119,7 @@ export class HttpRequest {
                 console.log(actionManyParams, 'actionMany params')
                 data = actionManyParams
             } else {
+                console.log(actionParameters)
                 data = actionParameters
             }
             if (GlobalVariables.httpBaseUrl || GlobalVariables.authBaseUrl) {

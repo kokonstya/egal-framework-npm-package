@@ -10,7 +10,8 @@ class EventObserver {
         return exports.observers.findIndex((item) => item.modelName === modelName) === -1 && exports.observers.push({ modelName, fn });
     }
     unsubscribe(modelName) {
-        return exports.observers.filter((subscriber) => subscriber.modelName !== modelName);
+        exports.observers = exports.observers.filter((subscriber) => subscriber.modelName !== modelName);
+        return exports.observers;
     }
     broadcast(data, actionName, receivedModelName) {
         exports.observers.forEach((subscriber) => {

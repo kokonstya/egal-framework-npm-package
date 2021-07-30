@@ -70,7 +70,7 @@ class Model {
      * @param data
      */
     commitToStore(data, actionName) {
-        this.storeCreator.commitItemsToStore(data, actionName);
+        this.storeCreator.commitItemsToStore(data, actionName, this.modelName);
     }
     /**
      * Function that allows to receive items from store based on some parameter
