@@ -1,3 +1,7 @@
+import CookieManager from '@react-native-cookies/cookies';
+
+const BASE_URL = 'your_base_url';
+
 export class GlobalVariables {
   public static socketBaseUrl: string;
   public static httpBaseUrl: string;
@@ -16,35 +20,40 @@ export const decipherJWT = function (token:string) {
 export const setCookie = async function(name:string, token:string) {
   let decipheredJWT = await decipherJWT(token)
   let expirationDate = decipheredJWT.alive_until
-  document.cookie = name + "=" + token + "; expires=" + expirationDate + ";samesite=strict;secure;"
+  await CookieManager.set(BASE_URL, {
+    name,
+    value: token,
+    expires: expirationDate,
+    secure: true
+  }).catch(rej => {
+      console.log("setCookie Reject: ", rej)
+  })
 };
 
 export const getCookie = function (cname: string) {
-  const name = cname + "=";
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const cookieParts = decodedCookie.split(';');
-  for (let i = 0; i < cookieParts.length; i++) {
-    let part = cookieParts[i];
-    while (part.charAt(0) == ' ') {
-      part = part.substring(1);
-    }
-    if (part.indexOf(name) == 0) {
-      return part.substring(name.length, part.length);
-    }
-  }
+  CookieManager.get(BASE_URL).then((cookies) => {
+    return JSON.stringify(cookies[cname])
+  }).catch((rej) => {
+      console.log("getCookies Reject: ", rej)
+      return ""
+  })
   return "";
 };
 
 export const deleteAllCookies = function () {
-  let cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i];
-    let eqPos = cookie.indexOf("=");
-    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
+  CookieManager.clearAll().then(res => {
+      console.log("deleteAllCookies Resolve: ", res)
+  }).catch(rej => {
+      console.log("deleteAllCookies Reject: ", rej)
+  })
 }
 
 export const deleteCookie = function (name:string) {
-  document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    CookieManager.set(BASE_URL, {
+        name,
+        value: "",
+        expires: "1970-01-01T00:00:01.000Z"
+    }).catch(rej => {
+        console.log('deleteCookie Reject: ', rej)
+    })
 }
