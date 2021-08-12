@@ -18,8 +18,8 @@ export class SocketRequest {
     modelName: string;
     actionName: string;
     actionParameters: ActionParameters | undefined;
-    token: string | null;
-    tokenUst: string | null;
+    token: Promise<any> | string | null;
+    tokenUst: Promise<any> | string;
     uuid: string;
     actionResult: ActionResult;
     actionError: ActionError;

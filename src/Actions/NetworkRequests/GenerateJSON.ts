@@ -20,7 +20,7 @@ export class GenerateJSON {
     modelName: string,
     actionName: string,
     actionParameters: ActionParameters | undefined,
-    token: string | null,
+    token: Promise<any> | string | null,
     uuid: string
   ) {
     const parametersCRUD: ParametersInterface = { attributes: {} };
