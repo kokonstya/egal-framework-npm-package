@@ -9,7 +9,7 @@ let register = 'registerByEmailAndPassword';
 let auth = 'loginByEmailAndPassword';
 let loginIntoService = 'loginToService';
 class AuthAction {
-    constructor(username, password, modelName, requestType) {
+    constructor(username, password, modelName, requestType, environment) {
         this.microserviceName = 'auth';
         this.modelName = modelName;
         this.username = username;
@@ -18,6 +18,7 @@ class AuthAction {
         this.requestAction = '';
         this.requestType = requestType;
         this.httpRequest = new HttpRequest_1.HttpRequest();
+        this.environment = environment;
     }
     setBaseURL(baseAuthURL) {
         GlobalVariables_1.GlobalVariables.authBaseUrl = baseAuthURL;
@@ -37,7 +38,7 @@ class AuthAction {
             }
             else {
                 this.httpRequest
-                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams, tokenName)
+                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, this.environment, authParams, tokenName)
                     .then((response) => {
                     let typedResponse = response;
                     let action = typedResponse.splice(1, 1).toString();

@@ -18,8 +18,9 @@ export class AuthAction {
     private httpRequest: HttpRequest;
     private requestAction: string;
     private readonly requestType: string;
+    private environment: string
 
-    constructor(username: string, password: string, modelName: string, requestType: string) {
+    constructor(username: string, password: string, modelName: string, requestType: string, environment: string) {
         this.microserviceName = 'auth';
         this.modelName = modelName;
         this.username = username;
@@ -28,6 +29,7 @@ export class AuthAction {
         this.requestAction = '';
         this.requestType = requestType;
         this.httpRequest = new HttpRequest();
+        this.environment = environment;
     }
 
     setBaseURL(baseAuthURL: string) {
@@ -57,7 +59,7 @@ export class AuthAction {
                 socketRequest.initSocketConnect();
             } else {
                 this.httpRequest
-                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams, tokenName)
+                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, this.environment, authParams, tokenName)
                     .then((response) => {
                         let typedResponse: (string | object)[] = response as (string | object)[];
                         let action = typedResponse.splice(1, 1).toString();

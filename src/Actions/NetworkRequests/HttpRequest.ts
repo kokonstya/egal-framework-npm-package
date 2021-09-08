@@ -57,14 +57,16 @@ export class HttpRequest {
         modelName: string,
         actionName: string,
         httpMethod: Method,
+        environment: string,
         actionParameters: ActionParameters | undefined,
         tokenName?: string
     ) {
         let domain = GlobalVariables.httpBaseUrl ? GlobalVariables.httpBaseUrl : GlobalVariables.authBaseUrl
         let userTokenName = tokenName ? tokenName : GlobalVariables.tokenUST
+        console.log(userTokenName, 'tokenName from axiosConnect');
         const instance = axios.create({
             headers: {
-                'Authorization': getCookie(userTokenName)
+                'Authorization': getCookie(userTokenName, environment)
             }
         });
         // instance.interceptors.response.use(response => {
