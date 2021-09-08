@@ -25,7 +25,7 @@ export class Model implements ModelInterface {
     private databaseFields: string[];
     private fieldsWithTypes: object[];
     private allModelsMetadata: string | object;
-    private tokenUst: boolean;
+    private tokenUst: string;
     private tokenUmt: boolean;
     constructor(modelName: string, username: string, password: string) {
         this.modelName = modelName;
@@ -39,16 +39,20 @@ export class Model implements ModelInterface {
         this.databaseFields = [];
         this.fieldsWithTypes = [];
         this.allModelsMetadata = {};
-        this.tokenUst = false;
         this.tokenUmt = false;
+        this.tokenUst = ''
     }
 
+    setAuthToken(token:string){
+        GlobalVariables.tokenUST = token
+    }
     /**
      * Получение метаданных модели
      * @param microserviceName
      * @param connectionType
      */
     actionGetMetadata(microserviceName: string, connectionType: string) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeGetMetadataRequest = new GetModelMetadataAction(
             this.username,
             this.password,
@@ -78,6 +82,7 @@ export class Model implements ModelInterface {
         withs?: string | string[],
         orders?: string[][]
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeGetItems = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
         initializeGetItems.actionParameters.with(withs)
         initializeGetItems.actionParameters.filters(filter);
@@ -105,6 +110,7 @@ export class Model implements ModelInterface {
         withs?: [],
         orders?: string[][]
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeGetItem = new GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItem');
         initializeGetItem.actionParameters.with(withs);
         initializeGetItem.actionParameters.filters(filter);
@@ -124,6 +130,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionUpdate = new CRUDAction(
             this.username,
             this.password,
@@ -147,6 +154,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionUpdate = new CRUDAction(
             this.username,
             this.password,
@@ -169,6 +177,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionUpdateManyWithFilter = new CRUDAction(
             this.username,
             this.password,
@@ -193,6 +202,7 @@ export class Model implements ModelInterface {
         actionParams: object,
         channelParameters?: RoutingKeyParams
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionCreate = new CRUDAction(
             this.username,
             this.password,
@@ -217,6 +227,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionCreate = new CRUDAction(
             this.username,
             this.password,
@@ -239,6 +250,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: string[]
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionDelete = new CRUDAction(
             this.username,
             this.password,
@@ -262,6 +274,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: string[]
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionDelete = new CRUDAction(
             this.username,
             this.password,
@@ -284,6 +297,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionDeleteManyWithFilter = new CRUDAction(
             this.username,
             this.password,
@@ -309,6 +323,7 @@ export class Model implements ModelInterface {
         connectionType: string,
         actionParams?: object
     ) {
+        GlobalVariables.tokenUST = microserviceName
         const initializeActionCustom = new CustomAction(
             this.username,
             this.password,

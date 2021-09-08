@@ -23,8 +23,11 @@ class Model {
         this.databaseFields = [];
         this.fieldsWithTypes = [];
         this.allModelsMetadata = {};
-        this.tokenUst = false;
         this.tokenUmt = false;
+        this.tokenUst = '';
+    }
+    setAuthToken(token) {
+        GlobalVariables_1.GlobalVariables.tokenUST = token;
     }
     /**
      * Получение метаданных модели
@@ -32,6 +35,7 @@ class Model {
      * @param connectionType
      */
     actionGetMetadata(microserviceName, connectionType) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeGetMetadataRequest = new GetModelMetadataAction_1.GetModelMetadataAction(this.username, this.password, microserviceName, 'getMetadata', this.modelName);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeGetMetadataRequest);
     }
@@ -46,6 +50,7 @@ class Model {
      * @param perPage
      */
     actionGetItems(microserviceName, connectionType, perPage, page, filter, withs, orders) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeGetItems = new GetItemsAction_1.GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItems');
         initializeGetItems.actionParameters.with(withs);
         initializeGetItems.actionParameters.filters(filter);
@@ -65,6 +70,7 @@ class Model {
      * @param orders
      */
     actionGetItem(microserviceName, connectionType, id, filter, withs, orders) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeGetItem = new GetItemsAction_1.GetItemsAction(this.username, this.password, microserviceName, this.modelName, 'getItem');
         initializeGetItem.actionParameters.with(withs);
         initializeGetItem.actionParameters.filters(filter);
@@ -79,6 +85,7 @@ class Model {
      * @param actionParams
      */
     actionUpdate(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionUpdate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'update', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdate);
     }
@@ -89,6 +96,7 @@ class Model {
      * @param actionParams
      */
     actionUpdateMany(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionUpdate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'updateMany', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdate);
     }
@@ -99,6 +107,7 @@ class Model {
      * @param actionParams
      */
     actionUpdateManyWithFilter(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionUpdateManyWithFilter = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'updateManyRaw', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionUpdateManyWithFilter);
     }
@@ -110,6 +119,7 @@ class Model {
      * @param channelParameters
      */
     actionCreate(microserviceName, connectionType, actionParams, channelParameters) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionCreate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'create', actionParams, channelParameters);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCreate);
     }
@@ -120,6 +130,7 @@ class Model {
      * @param actionParams
      */
     actionCreateMany(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionCreate = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'createMany', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCreate);
     }
@@ -130,6 +141,7 @@ class Model {
      * @param actionParams
      */
     actionDelete(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionDelete = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'delete', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDelete);
     }
@@ -140,6 +152,7 @@ class Model {
      * @param actionParams
      */
     actionDeleteMany(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionDelete = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'deleteMany', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDelete);
     }
@@ -150,6 +163,7 @@ class Model {
      * @param actionParams
      */
     actionDeleteManyWithFilter(microserviceName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionDeleteManyWithFilter = new CRUDAction_1.CRUDAction(this.username, this.password, microserviceName, this.modelName, 'deleteManyRaw', actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionDeleteManyWithFilter);
     }
@@ -161,6 +175,7 @@ class Model {
      * @param actionParams
      */
     actionCustom(microserviceName, actionName, connectionType, actionParams) {
+        GlobalVariables_1.GlobalVariables.tokenUST = microserviceName;
         const initializeActionCustom = new CustomAction_1.CustomAction(this.username, this.password, microserviceName, this.modelName, actionName, actionParams);
         new ModelConnection_1.ModelConnection().createConnection(connectionType, initializeActionCustom);
     }

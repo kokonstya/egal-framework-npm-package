@@ -57,12 +57,14 @@ export class HttpRequest {
         modelName: string,
         actionName: string,
         httpMethod: Method,
-        actionParameters: ActionParameters | undefined
+        actionParameters: ActionParameters | undefined,
+        tokenName?: string
     ) {
         let domain = GlobalVariables.httpBaseUrl ? GlobalVariables.httpBaseUrl : GlobalVariables.authBaseUrl
+        let userTokenName = tokenName ? tokenName : GlobalVariables.tokenUST
         const instance = axios.create({
             headers: {
-                'Authorization': getCookie('mandate')
+                'Authorization': getCookie(userTokenName)
             }
         });
         // instance.interceptors.response.use(response => {
@@ -128,7 +130,8 @@ export class HttpRequest {
                         this.actionResult = new ActionResult(
                             response.data?.action_result.data,
                             response.data?.action_result.action_message.action_name,
-                            response.data?.action_result.action_message.model_name
+                            response.data?.action_result.action_message.model_name,
+                            response.data?.action_result.action_message
                         );
                         resolve(this.actionResult.getData());
                     })

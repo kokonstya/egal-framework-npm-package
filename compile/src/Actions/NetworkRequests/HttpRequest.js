@@ -48,11 +48,12 @@ class HttpRequest {
     //         }
     //     })
     // }
-    axiosConnect(serviceName, modelName, actionName, httpMethod, actionParameters) {
+    axiosConnect(serviceName, modelName, actionName, httpMethod, actionParameters, tokenName) {
         let domain = GlobalVariables_1.GlobalVariables.httpBaseUrl ? GlobalVariables_1.GlobalVariables.httpBaseUrl : GlobalVariables_1.GlobalVariables.authBaseUrl;
+        let userTokenName = tokenName ? tokenName : GlobalVariables_1.GlobalVariables.tokenUST;
         const instance = axios_1.default.create({
             headers: {
-                'Authorization': GlobalVariables_1.getCookie('mandate')
+                'Authorization': GlobalVariables_1.getCookie(userTokenName)
             }
         });
         // instance.interceptors.response.use(response => {
@@ -116,8 +117,8 @@ class HttpRequest {
                     data: data
                 })
                     .then((response) => {
-                    var _a, _b, _c;
-                    this.actionResult = new ActionResult_1.ActionResult((_a = response.data) === null || _a === void 0 ? void 0 : _a.action_result.data, (_b = response.data) === null || _b === void 0 ? void 0 : _b.action_result.action_message.action_name, (_c = response.data) === null || _c === void 0 ? void 0 : _c.action_result.action_message.model_name);
+                    var _a, _b, _c, _d;
+                    this.actionResult = new ActionResult_1.ActionResult((_a = response.data) === null || _a === void 0 ? void 0 : _a.action_result.data, (_b = response.data) === null || _b === void 0 ? void 0 : _b.action_result.action_message.action_name, (_c = response.data) === null || _c === void 0 ? void 0 : _c.action_result.action_message.model_name, (_d = response.data) === null || _d === void 0 ? void 0 : _d.action_result.action_message);
                     resolve(this.actionResult.getData());
                 })
                     .catch((error) => {
