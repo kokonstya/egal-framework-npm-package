@@ -48,12 +48,13 @@ class HttpRequest {
     //         }
     //     })
     // }
-    axiosConnect(serviceName, modelName, actionName, httpMethod, actionParameters, tokenName) {
+    axiosConnect(serviceName, modelName, actionName, httpMethod, environment, actionParameters, tokenName) {
         let domain = GlobalVariables_1.GlobalVariables.httpBaseUrl ? GlobalVariables_1.GlobalVariables.httpBaseUrl : GlobalVariables_1.GlobalVariables.authBaseUrl;
         let userTokenName = tokenName ? tokenName : GlobalVariables_1.GlobalVariables.tokenUST;
+        console.log(userTokenName, 'tokenName from axiosConnect');
         const instance = axios_1.default.create({
             headers: {
-                'Authorization': GlobalVariables_1.getCookie(userTokenName)
+                'Authorization': (0, GlobalVariables_1.getCookie)(userTokenName, environment)
             }
         });
         // instance.interceptors.response.use(response => {
