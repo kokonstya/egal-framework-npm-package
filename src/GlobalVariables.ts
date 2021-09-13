@@ -1,4 +1,5 @@
-import EncryptedStorage from 'react-native-encrypted-storage';
+import storage from './MMKVStorage';
+import jwtDecode from "jwt-decode";
 
 export class GlobalVariables {
   public static socketBaseUrl: string;
@@ -6,33 +7,36 @@ export class GlobalVariables {
   public static authBaseUrl: string;
   public static tokenUST: string;
   public static tokenUMT: string;
+  public static environment: string;
 }
 
-export const decipherJWT = function (token:string | Promise<any>) {
-  // @ts-ignore
-  let base64Url = token.split('.')[1];
-  let base64 = base64Url.replace('-', '+').replace('_', '/');
-  // @ts-ignore
-  return JSON.parse(Buffer.from(base64, 'base64').toString('binary'));
+export const decipherJWT = function (token: string) {
+  if (GlobalVariables.environment === 'vue') {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
+    // @ts-ignore
+    return JSON.parse(Buffer.from(base64, 'base64').toString('binary'));
+  } else if (GlobalVariables.environment === 'react-native') {
+    return jwtDecode(token);
+  }
 };
 
-export const setCookie = async function(name:string, token:string) {
-  let decipheredJWT = await decipherJWT(token)
-  let expirationDate = decipheredJWT.alive_until
-  if(document !== undefined) {
+export const setCookie = async function (name: string, token: string) {
+  if (GlobalVariables.environment === 'vue') {
+    let decipheredJWT = await decipherJWT(token)
+    let expirationDate = decipheredJWT.alive_until
     document.cookie = name + "=" + token + "; expires=" + expirationDate + ";samesite=strict;secure;"
-  } else {
+  } else if (GlobalVariables.environment === 'react-native') {
     try {
-      await EncryptedStorage.setItem(name, token);
+      storage.set(name, token);
     } catch (error) {
-      console.log(error, 'error from set cookie cookie')
-      return error
+      console.log(error, 'error from setCookie');
     }
   }
 };
 
-export const getCookie = async function (cname: string) {
-  if(document !== undefined) {
+export const getCookie = function (cname: string) {
+  if (GlobalVariables.environment === ' vue') {
     const name = cname + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieParts = decodedCookie.split(';');
@@ -45,23 +49,21 @@ export const getCookie = async function (cname: string) {
         return part.substring(name.length, part.length);
       }
     }
-  } else {
-    try {
-      const session = await EncryptedStorage.getItem(cname);
-      if (session !== undefined) {
-        return session
+  } else if (GlobalVariables.environment === 'react-native') {
+    if (cname !== undefined) {
+      try {
+        return storage.getString(cname);
+      } catch (error) {
+        console.log(error, 'error from getCookie');
+        console.log(cname, 'cname from getCookie');
       }
-    } catch (error) {
-      console.log(error, 'error from get cookie cookie')
-      return error
     }
   }
-
   return "";
 };
 
-export const deleteAllCookies = async function () {
-  if(document !== undefined) {
+export const deleteAllCookies = function () {
+  if (GlobalVariables.environment === 'vue') {
     let cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       let cookie = cookies[i];
@@ -69,27 +71,22 @@ export const deleteAllCookies = async function () {
       let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
       document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
-  } else {
-    try {
-      await EncryptedStorage.clear();
-    } catch (error) {
-      console.log(error, 'error from delete all cookies')
-      return error
+  } else if (GlobalVariables.environment === 'react-native'){
+    let data = storage.getAllKeys();
+    for (let i of data){
+      storage.delete(i);
     }
   }
-
 }
 
-export const deleteCookie = async function (name:string) {
-  if (document !== undefined) {
+export const deleteCookie = function (name: string) {
+  if (GlobalVariables.environment === 'vue') {
     document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
-  } else {
+  } else if (GlobalVariables.environment === 'react-native') {
     try {
-      await EncryptedStorage.removeItem(name);
+      storage.delete(name);
     } catch (error) {
-      console.log(error, 'error from delete cookie')
-      return error
+      console.log(error, 'error from deleteCookie')
     }
   }
-
 }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SocketRequest = void 0;
+require("react-native-get-random-values");
 const uuid_1 = require("uuid");
 const ActionResult_1 = require("../ActionResponses/ActionResult");
 const ActionError_1 = require("../ActionResponses/ActionError");
@@ -22,8 +23,8 @@ class SocketRequest {
         this.actionName = actionName;
         this.channelParameters = channelParameters;
         this.actionParameters = actionParameters;
-        this.tokenUst = GlobalVariables_1.getCookie('mandate');
-        this.uuid = uuid_1.v4();
+        this.tokenUst = GlobalVariables_1.GlobalVariables.tokenUST;
+        this.uuid = (0, uuid_1.v4)();
         this.token = null;
         this.authOptions = new GenerateJSON_1.GenerateJSON().generateJSONObj(this.type, this.serviceName, this.modelName, this.actionName, this.actionParameters, this.token, this.uuid);
         this.options = new GenerateJSON_1.GenerateJSON().generateJSONObj(this.type, this.serviceName, this.modelName, this.actionName, this.actionParameters, this.tokenUst, this.uuid);
@@ -120,7 +121,7 @@ class SocketRequest {
         });
     }
     refreshToken() {
-        let currentToken = GlobalVariables_1.decipherJWT(GlobalVariables_1.getCookie('mandate'));
+        let currentToken = (0, GlobalVariables_1.decipherJWT)(GlobalVariables_1.GlobalVariables.tokenUST);
         let tokenExpirationTime = currentToken.alive_until;
     }
 }

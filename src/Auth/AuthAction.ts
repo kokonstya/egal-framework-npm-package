@@ -2,7 +2,7 @@ import {Method} from 'axios';
 import {HttpRequest} from '../Actions/NetworkRequests/HttpRequest';
 import {SocketRequest} from '../Actions/NetworkRequests/SocketRequest';
 import {AuthParams} from './AuthParams';
-import {GlobalVariables} from '../GlobalVariables';
+import {GlobalVariables, setCookie} from '../GlobalVariables';
 import {ActionParameters} from '../Actions/Interfaces/ActionParameters';
 
 let register = 'registerByEmailAndPassword';
@@ -19,7 +19,7 @@ export class AuthAction {
     private requestAction: string;
     private readonly requestType: string;
 
-    constructor(username: string, password: string, modelName: string, requestType: string) {
+    constructor(username: string, password: string, modelName: string, requestType: string, environment: string) {
         this.microserviceName = 'auth';
         this.modelName = modelName;
         this.username = username;
@@ -42,7 +42,11 @@ export class AuthAction {
         GlobalVariables.tokenUMT = tokenUMT;
     }
 
-    setNetworkRequest(userData: ActionParameters | undefined, requestType: string){
+    setEnvironment(environment: string){
+        GlobalVariables.environment = environment;
+    }
+
+    setNetworkRequest(userData: ActionParameters | undefined, requestType: string, tokenName?:string){
         return new Promise((resolve, reject) => {
             let authParams = new AuthParams().setAuthParams(userData);
             let socketRequest = new SocketRequest(
@@ -57,7 +61,7 @@ export class AuthAction {
                 socketRequest.initSocketConnect();
             } else {
                 this.httpRequest
-                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams)
+                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams, tokenName)
                     .then((response) => {
                         let typedResponse: (string | object)[] = response as (string | object)[];
                         let action = typedResponse.splice(1, 1).toString();
@@ -93,10 +97,19 @@ export class AuthAction {
         })
     }
 
-    loginToService(userCred: ActionParameters | undefined) {
+    loginToService(userCred: ActionParameters | undefined, tokenName?:string) {
         return new Promise((resolve, reject) => {
-            this.setNetworkRequest(userCred, loginIntoService).then((data) => {
+            this.setNetworkRequest(userCred, loginIntoService, tokenName).then((data) => {
                 resolve(data)
+                if (userCred !== undefined && userCred.service_name !== undefined)
+                try {
+                    // @ts-ignore data is of type unknown
+                    setCookie(userCred.service_name, data[0][0], 'react-native')
+                    console.log('token set!')
+                } catch (error) {
+                    reject(error)
+                }
+                // console.log(data, 'data from login to service')
             }).catch((error) => {
                 reject(error)
             })

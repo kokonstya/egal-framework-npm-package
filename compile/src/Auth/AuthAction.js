@@ -9,7 +9,7 @@ let register = 'registerByEmailAndPassword';
 let auth = 'loginByEmailAndPassword';
 let loginIntoService = 'loginToService';
 class AuthAction {
-    constructor(username, password, modelName, requestType) {
+    constructor(username, password, modelName, requestType, environment) {
         this.microserviceName = 'auth';
         this.modelName = modelName;
         this.username = username;
@@ -28,7 +28,10 @@ class AuthAction {
     setTokenUMT(tokenUMT) {
         GlobalVariables_1.GlobalVariables.tokenUMT = tokenUMT;
     }
-    setNetworkRequest(userData, requestType) {
+    setEnvironment(environment) {
+        GlobalVariables_1.GlobalVariables.environment = environment;
+    }
+    setNetworkRequest(userData, requestType, tokenName) {
         return new Promise((resolve, reject) => {
             let authParams = new AuthParams_1.AuthParams().setAuthParams(userData);
             let socketRequest = new SocketRequest_1.SocketRequest(this.username, this.password, this.microserviceName, requestType, this.modelName, authParams);
@@ -37,7 +40,7 @@ class AuthAction {
             }
             else {
                 this.httpRequest
-                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams)
+                    .axiosConnect(this.microserviceName, this.modelName, requestType, this.httpMethod, authParams, tokenName)
                     .then((response) => {
                     let typedResponse = response;
                     let action = typedResponse.splice(1, 1).toString();
@@ -70,10 +73,20 @@ class AuthAction {
             });
         });
     }
-    loginToService(userCred) {
+    loginToService(userCred, tokenName) {
         return new Promise((resolve, reject) => {
-            this.setNetworkRequest(userCred, loginIntoService).then((data) => {
+            this.setNetworkRequest(userCred, loginIntoService, tokenName).then((data) => {
                 resolve(data);
+                if (userCred !== undefined && userCred.service_name !== undefined)
+                    try {
+                        // @ts-ignore data is of type unknown
+                        (0, GlobalVariables_1.setCookie)(userCred.service_name, data[0][0], 'react-native');
+                        console.log('token set!');
+                    }
+                    catch (error) {
+                        reject(error);
+                    }
+                // console.log(data, 'data from login to service')
             }).catch((error) => {
                 reject(error);
             });
