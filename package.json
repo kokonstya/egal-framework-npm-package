@@ -1,4 +1,5 @@
 {
+  "version": "2.0.0-beta32",
   "name": "@egalteam/framework",
   "description": "Egal",
   "main": "index.js",
@@ -20,9 +21,9 @@
   "dependencies": {
     "@types/stompjs": "^2.3.4",
     "axios": "^0.21.1",
+    "jwt-decode": "^3.1.2",
     "prettier": "^2.2.1",
     "react-native-get-random-values": "^1.7.0",
-    "react-native-mmkv": "^1.3.1",
     "sockjs-client": "^1.5.1",
     "stompjs": "^2.3.3",
     "typescript": "^4.2.3",

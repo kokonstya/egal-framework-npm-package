@@ -11,10 +11,11 @@ const GlobalVariables_1 = require("../GlobalVariables");
 const ModelConnection_1 = require("./ModelConnection");
 const observer = Observer_1.EventObserver.getInstance();
 class Model {
-    constructor(modelName, username, password) {
+    constructor(modelName, username, password, environment) {
         this.modelName = modelName;
         this.username = username;
         this.password = password;
+        this.environment = environment;
         this.modelItems = [];
         this.modelActionList = [];
         this.modelValidationRules = {};
@@ -255,6 +256,9 @@ class Model {
         if (connectionType === 'socket')
             GlobalVariables_1.GlobalVariables.socketBaseUrl = URL;
         GlobalVariables_1.GlobalVariables.httpBaseUrl = URL;
+    }
+    setEnvironment(environment) {
+        GlobalVariables_1.GlobalVariables.environment = environment;
     }
     socketDisconnect() {
         observer.broadcastSocketDisconnect('disconnect');

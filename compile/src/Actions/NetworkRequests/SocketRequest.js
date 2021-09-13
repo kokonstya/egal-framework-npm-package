@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SocketRequest = void 0;
+require("react-native-get-random-values");
 const uuid_1 = require("uuid");
 const ActionResult_1 = require("../ActionResponses/ActionResult");
 const ActionError_1 = require("../ActionResponses/ActionError");

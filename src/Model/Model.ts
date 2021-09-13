@@ -16,6 +16,7 @@ export class Model implements ModelInterface {
     public modelName: string;
     public username: string;
     public password: string;
+    public environment: string;
     private modelMetaData!: MetaDataInterface;
     private readonly modelItems: (string | object)[];
     private modelActionList: string[];
@@ -27,10 +28,11 @@ export class Model implements ModelInterface {
     private allModelsMetadata: string | object;
     private tokenUst: string;
     private tokenUmt: boolean;
-    constructor(modelName: string, username: string, password: string) {
+    constructor(modelName: string, username: string, password: string, environment: string) {
         this.modelName = modelName;
         this.username = username;
         this.password = password;
+        this.environment = environment;
         this.modelItems = [];
         this.modelActionList = [];
         this.modelValidationRules = {};
@@ -420,6 +422,10 @@ export class Model implements ModelInterface {
     setBaseUrl(URL: string, connectionType: string) {
         if (connectionType === 'socket') GlobalVariables.socketBaseUrl = URL;
         GlobalVariables.httpBaseUrl = URL;
+    }
+
+    setEnvironment(environment: string){
+        GlobalVariables.environment = environment;
     }
 
     socketDisconnect() {
